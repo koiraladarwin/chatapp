@@ -6,14 +6,17 @@ import (
 	"net/http"
 	"sync"
 	"time"
+
 	"github.com/batmanboxer/chatapp/models"
+	"github.com/batmanboxer/chatapp/protomodels"
 	"github.com/gorilla/websocket"
+	"google.golang.org/protobuf/proto"
 )
 
 type WebSocketManager struct {
 	ChatStorage ChatStorage
-	Clients map[string][]*models.Client
-	Mutex   sync.RWMutex
+	Clients     map[string][]*models.Client
+	Mutex       sync.RWMutex
 }
 
 var upgrader = websocket.Upgrader{
@@ -118,7 +121,7 @@ func (h *WebSocketManager) broadcastMessage(roomId string, message string, clien
 	}
 }
 
-func(h *WebSocketManager) testMsg(client *models.Client) {
+func (h *WebSocketManager) testMsg(client *models.Client) {
 	for {
 		client.Messagech <- "testing"
 		time.Sleep(5 * time.Second)
@@ -126,8 +129,22 @@ func(h *WebSocketManager) testMsg(client *models.Client) {
 }
 
 func (h *WebSocketManager) handleMessages(client *models.Client) {
+
 	for message := range client.Messagech {
-		err := client.Conn.WriteMessage(websocket.TextMessage, []byte(message))
+		sendMessageSchema := &proto_models.ChatMessage{
+			Type:      proto_models.MessageType_TEXT,
+			Content:   message,
+			Timestamp: time.Now().Unix(),
+		}
+
+		sendMessage, err := proto.Marshal(sendMessageSchema)
+
+		if err != nil {
+			log.Println("unable to marshal protocol buffer")
+			continue
+		}
+
+		err = client.Conn.WriteMessage(websocket.BinaryMessage, []byte(sendMessage))
 		if err != nil {
 			fmt.Println("Error sending message to client", client.Messagech, err)
 			return

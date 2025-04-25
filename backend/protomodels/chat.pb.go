@@ -4,7 +4,7 @@
 // 	protoc        v3.19.6
 // source: chat.proto
 
-package proto
+package proto_models
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
