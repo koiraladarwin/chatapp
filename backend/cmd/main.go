@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
-	"os"
 	"github.com/batmanboxer/chatapp/api/server"
 	"github.com/batmanboxer/chatapp/internal/postgres"
 	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 func main() {
@@ -18,10 +18,10 @@ func main() {
 	connStr := os.Getenv("POSTGRESS_URL")
 
 	if connStr == "" {
-    log.Fatal("Postgress connection string is not set in .env")
+		log.Fatal("Postgress connection string is not set in .env")
 	}
 
-	postgress, err := postgress.NewPostGres("postgres",connStr)
+	postgress, err := postgress.NewPostGres("postgres", connStr)
 
 	if err != nil {
 		log.Fatal("Cound Not Establish a Connection to Database", err.Error())

@@ -1,12 +1,20 @@
 package auth
 
-import "github.com/batmanboxer/chatapp/models"
+import (
+	"github.com/batmanboxer/chatapp/models"
+	"golang.org/x/crypto/bcrypt"
+)
 
 func (auth *AuthManager) AuthSignUp(signUpData models.SignUpData) error {
-	error := auth.AuthDb.AddAccount(signUpData)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(signUpData.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 
-	if error != nil {
-		return error
+	signUpData.Password = string(hashedPassword)
+	err = auth.AuthDb.AddAccount(signUpData)
+	if err != nil {
+		return err
 	}
 
 	return nil

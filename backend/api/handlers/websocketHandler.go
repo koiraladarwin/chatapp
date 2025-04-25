@@ -24,7 +24,6 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return errors.New("User Id Invalid")
 	}
 
-	//todo : check is chatroomid exists and if user is allowed in that chat room
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 
@@ -32,6 +31,7 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
+	//todo : check is chatroomid exists and if user is allowed in that chat room
 	h.ChatManager.WebsocketAddClient(conn, chatroomId, stringUserId)
 	return nil
 }

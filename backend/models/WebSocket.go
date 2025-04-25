@@ -16,14 +16,14 @@ type MessageModel struct {
 	Id        string    `json:"id"`
 	SenderId  string    `json:"sender_id"`
 	RoomId    string    `json:"room_id"`
-	Message   string    `json:"message"`
+	Text   string    `json:"message"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 type Client struct {
 	Id        string
 	Conn      *websocket.Conn
-	Messagech chan string
+	Messagech chan MessageModel
 	Closech   chan struct{}
 	Mutex     *sync.RWMutex
 }

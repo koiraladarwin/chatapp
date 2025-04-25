@@ -7,6 +7,7 @@ import (
 type AuthStorage interface {
 	AddAccount(models.SignUpData) error
 	GetUserByEmail(string) (models.AccountModel, error)
+	GetUserById(string) (models.AccountModel, error)
 }
 
 type AuthManager struct {

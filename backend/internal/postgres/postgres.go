@@ -64,7 +64,6 @@ func NewPostGres(dbName string,connStr string) (*Postgres, error) {
 }
 
 func (postgres *Postgres) AddAccount(signUpData models.SignUpData) error {
-	//change password to password hash later and password should be a hash
 	addAccountQuery := `INSERT INTO users(name,email,password)VAlUES($1,$2,$3)`
 	_, err := postgres.db.Exec(addAccountQuery, signUpData.Name, signUpData.Email, signUpData.Password)
 
@@ -81,9 +80,19 @@ func (postgres *Postgres) GetUserByEmail(email string) (models.AccountModel, err
 	return account, nil
 }
 
+func (postgres *Postgres) GetUserById(id string) (models.AccountModel, error) {
+	account := models.AccountModel{}
+	query := `SELECT * FROM users WHERE id = $1`
+	err := postgres.db.QueryRow(query, id).Scan(&account.ID, &account.Name, &account.Email, &account.Password, &account.Verified, &account.CreatedAt)
+	if err != nil {
+		return account, err
+	}
+	return account, nil
+}
+
 func (postgres *Postgres) AddMessage(messageModel models.MessageModel) error {
 	addAccountQuery := `INSERT INTO chats(room_id,sender_id,message)VAlUES($1,$2,$3)`
-	_, err := postgres.db.Exec(addAccountQuery, messageModel.RoomId, messageModel.SenderId, messageModel.Message)
+	_, err := postgres.db.Exec(addAccountQuery, messageModel.RoomId, messageModel.SenderId, messageModel.Text)
 
 	return err
 }
@@ -99,7 +108,7 @@ func (postgres *Postgres) GetMessages(chatRoomId string, limit int, offset int) 
 
 	for rows.Next() {
 		message := models.MessageModel{}
-		rows.Scan(&message.Id, &message.RoomId, &message.SenderId, &message.Message, &message.CreatedAt)
+		rows.Scan(&message.Id, &message.RoomId, &message.SenderId, &message.Text, &message.CreatedAt)
 		Messages = append(Messages, message)
 	}
 	return Messages, nil

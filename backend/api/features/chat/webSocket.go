@@ -20,6 +20,8 @@ type WebSocketManager struct {
 }
 
 var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
 		return true
 	},
@@ -31,20 +33,22 @@ func (h *WebSocketManager) addClient(chatRoomId string, client *models.Client) {
 
 	h.Clients[chatRoomId] = append((h.Clients[chatRoomId]), client)
 
-	go h.handleMessages(client)
-	//go h.testMsg(client)
+	go h.deliverMessage(client)
 	go h.listenMessage(chatRoomId, client)
+  go h.sendPingLoop(client)
+
 }
 
-func (h *WebSocketManager) initialMessage(chatRoomId string, client *models.Client, limit int) {
-	messages, err := h.ChatStorage.GetMessages(chatRoomId, limit, 0)
-	if err != nil {
-		return
-	}
-	for _, message := range messages {
-		client.Messagech <- message.Message
-	}
-}
+//not sure if i want this to be seprete or in websocket
+// func (h *WebSocketManager) initialMessage(chatRoomId string, client *models.Client, limit int) {
+// 	messages, err := h.ChatStorage.GetMessages(chatRoomId, limit, 0)
+// 	if err != nil {
+// 		return
+// 	}
+// 	for _, message := range messages {
+// 		client.Messagech <- message.Message
+// 	}
+// }
 
 func (h *WebSocketManager) removeClient(chatRoomId string, userId string) {
 	h.Mutex.Lock()
@@ -73,17 +77,20 @@ func (h *WebSocketManager) removeClient(chatRoomId string, userId string) {
 	}
 }
 
-func (h *WebSocketManager) listenMessage(roomID string, client *models.Client) {
-	//authorized client
+func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
+
 	for {
 		messageType, p, err := client.Conn.ReadMessage()
 		if err != nil {
 			client.Closech <- struct{}{}
 			break
 		}
+
 		if messageType != websocket.TextMessage {
 			continue
 		}
+
+		//add protobuf here and yeah messagetype should be binary
 		// message := models.Message{}
 		// err = json.Unmarshal(p,&message)
 		// if err != nil{
@@ -91,12 +98,24 @@ func (h *WebSocketManager) listenMessage(roomID string, client *models.Client) {
 		//   break
 		// }
 
-		h.broadcastMessage(roomID, string(p), client)
-	}
+		message := models.MessageModel{
+			RoomId:   roomId,
+			Text:     string(p),
+			SenderId: client.Id,
+		}
 
+		err = h.ChatStorage.AddMessage(message)
+
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		h.broadcastMessage(roomId, string(p), client)
+	}
 }
 
-func (h *WebSocketManager) broadcastMessage(roomId string, message string, client *models.Client) {
+func (h *WebSocketManager) broadcastMessage(roomId string, text string, client *models.Client) {
 	h.Mutex.RLock()
 	defer h.Mutex.RUnlock()
 
@@ -104,14 +123,11 @@ func (h *WebSocketManager) broadcastMessage(roomId string, message string, clien
 	if !ok {
 		return
 	}
-	err := h.ChatStorage.AddMessage(models.MessageModel{
+
+	message := models.MessageModel{
 		RoomId:   roomId,
-		Message:  message,
+		Text:     text,
 		SenderId: client.Id,
-	})
-	if err != nil {
-		log.Println(err.Error())
-		return
 	}
 
 	for _, client := range clients {
@@ -119,22 +135,17 @@ func (h *WebSocketManager) broadcastMessage(roomId string, message string, clien
 			client.Messagech <- message
 		}
 	}
+
 }
 
-func (h *WebSocketManager) testMsg(client *models.Client) {
-	for {
-		client.Messagech <- "testing"
-		time.Sleep(5 * time.Second)
-	}
-}
-
-func (h *WebSocketManager) handleMessages(client *models.Client) {
+func (h *WebSocketManager) deliverMessage(client *models.Client) {
 
 	for message := range client.Messagech {
-		sendMessageSchema := &proto_models.ChatMessage{
-			Type:      proto_models.MessageType_TEXT,
-			Content:   message,
-			Timestamp: time.Now().Unix(),
+		sendMessageSchema := &protomodels.ChatMessage{
+			Type:      protomodels.MessageType_TEXT,
+			Content:   message.Text,
+			UserId:    message.SenderId,
+			Timestamp: message.CreatedAt.Unix(),
 		}
 
 		sendMessage, err := proto.Marshal(sendMessageSchema)
@@ -150,13 +161,49 @@ func (h *WebSocketManager) handleMessages(client *models.Client) {
 			return
 		}
 	}
+
+}
+
+func (h *WebSocketManager) sendPingLoop(client *models.Client) {
+	lastPong := time.Now()
+
+	client.Conn.SetPongHandler(func(appData string) error {
+		log.Println("Pong received")
+		lastPong = time.Now()
+		return nil
+	})
+
+	ticker := time.NewTicker(30 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		log.Println("Sending ping")
+
+		err := client.Conn.WriteMessage(websocket.PingMessage, []byte("ping"))
+		if err != nil {
+			log.Println("Ping failed:", err)
+			client.Closech <- struct{}{}
+			return
+		}
+
+		time.Sleep(10 * time.Second)
+
+		if time.Since(lastPong) > 10*time.Second {
+			log.Println("Pong not received in time, disconnecting")
+			client.Closech <- struct{}{}
+			return
+		}
+
+		<-ticker.C
+	}
 }
 
 func (h *WebSocketManager) WebsocketAddClient(conn *websocket.Conn, chatRoomId string, stringUserId string) {
+
 	client := &models.Client{
 		Id:        stringUserId,
 		Conn:      conn,
-		Messagech: make(chan string),
+		Messagech: make(chan models.MessageModel),
 		Closech:   make(chan struct{}),
 	}
 
