@@ -18,7 +18,7 @@ func main() {
 	connStr := os.Getenv("POSTGRESS_URL")
 
 	if connStr == "" {
-		log.Fatal("Postgress connection string is not set in .env")
+    log.Fatal("Postgress connection string (POSTGRESS_URL) is not set in .env")
 	}
 
 	postgress, err := postgress.NewPostGres("postgres", connStr)

@@ -11,7 +11,7 @@ import (
 
 func (h *Handlers) GetUserChatRoomsHanlder(w http.ResponseWriter, r *http.Request) error {
 
-	userId := r.Context().Value(common.CONTEXTIDKEY)
+	userId := r.Context().Value(common.CONTEXTUSERIDKEY)
 	stringUserId, ok := userId.(string)
 
 	if !ok {

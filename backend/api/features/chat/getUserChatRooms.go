@@ -6,7 +6,7 @@ import (
 )
 
 func (h *WebSocketManager) GetChatRoomsByUser(id uuid.UUID) ([]*models.ChatRoom, error) {
-	//checl if user had permission to chat that other user and stuff
+	//check if user had permission to chat that other user and stuff
 
 	return h.ChatStorage.GetChatRoomsByUser(id)
 

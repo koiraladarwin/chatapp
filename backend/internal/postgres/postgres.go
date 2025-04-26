@@ -22,6 +22,7 @@ func NewPostGres(dbName string,connStr string) (*Postgres, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
+
 	execute := `CREATE TABLE IF NOT EXISTS users(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,

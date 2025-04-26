@@ -1,16 +1,17 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 type ChatService interface {
 	WebsocketAddClient(conn *websocket.Conn, chatRoomId string, userId string)
 	AddChatRoom(users []uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
+	CheckChatRoomExists(uuid.UUID,uuid.UUID) bool
 }
 
 type AuthService interface {
@@ -35,5 +36,3 @@ func NewHandlers(
 }
 
 type customHttpHandler func(http.ResponseWriter, *http.Request) error
-
-

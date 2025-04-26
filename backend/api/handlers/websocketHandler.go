@@ -17,7 +17,7 @@ var upgrader = websocket.Upgrader{
 func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	chatroomId := vars["id"]
-	userId := r.Context().Value(common.CONTEXTIDKEY)
+	userId := r.Context().Value(common.CONTEXTUSERIDKEY)
 	stringUserId, ok := userId.(string)
 
 	if !ok {

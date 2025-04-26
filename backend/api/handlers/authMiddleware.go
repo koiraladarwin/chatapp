@@ -27,7 +27,7 @@ func (h *Handlers) AuthenticationMiddleware(next customHttpHandler) http.Handler
 			http.Error(w, "User Account Is Deleted By Admin", http.StatusUnauthorized)
 		}
 
-		ctx := context.WithValue(r.Context(), common.CONTEXTIDKEY, userId)
+		ctx := context.WithValue(r.Context(), common.CONTEXTUSERIDKEY, userId)
 
 		err = next(w, r.WithContext(ctx))
 		if err != nil {
