@@ -32,7 +32,7 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 		w.Write([]byte("User Doesnt Exists"))
     return nil
 	}
-	exists := h.ChatManager.CheckChatRoomExists(user1, user2)
+	exists := h.ChatManager.CheckChatRoomExistsBtnUsers(user1, user2)
 
 	if exists {
 		w.Write([]byte("Chat Room Already Exists"))

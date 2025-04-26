@@ -2,10 +2,14 @@ package handlers
 
 import (
 	"errors"
+	"log"
+	"net/http"
+	"strconv"
+
 	"github.com/batmanboxer/chatapp/common"
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
-	"net/http"
 )
 
 var upgrader = websocket.Upgrader{
@@ -24,6 +28,23 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return errors.New("User Id Invalid")
 	}
 
+	userUuid, err := uuid.Parse(stringUserId)
+	if err != nil {
+		return errors.New("User Id Invalid")
+	}
+
+	roomId, err := strconv.Atoi(chatroomId)
+
+	if err != nil {
+		log.Println("Invalid Room id")
+		return errors.New("Invalid Room Id")
+	}
+
+	exists := h.ChatManager.CheckChatRoomExists(userUuid, roomId)
+
+	if !exists {
+		return errors.New("Wrong ChatRoom Id Number")
+	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 
@@ -31,7 +52,6 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	//todo : check is chatroomid exists and if user is allowed in that chat room
 	h.ChatManager.WebsocketAddClient(conn, chatroomId, stringUserId)
 	return nil
 }

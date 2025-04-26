@@ -3,7 +3,6 @@ package handlers
 import (
 	"errors"
 	"net/http"
-
 	"github.com/batmanboxer/chatapp/common"
 	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/google/uuid"
