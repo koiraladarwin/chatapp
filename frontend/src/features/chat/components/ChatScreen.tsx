@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -16,42 +15,48 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const fakeMessages = [
-      { id: 1, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 2, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
-      { id: 6, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 7, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
-      { id: 1, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 2, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
-      { id: 1, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 2, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
-      { id: 1, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 2, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
-      { id: 1, sender: 'Darwin', text: 'Hello! How are you?', isUser: true },
-      { id: 2, sender: 'Person 123', text: 'I\'m good, thanks!', isUser: false },
-      { id: 3, sender: 'Darwin', text: 'Great to hear!', isUser: true },
-      { id: 4, sender: 'Person 123', text: 'What are you up to?', isUser: false },
-      { id: 5, sender: 'Darwin', text: 'Just working on a project, what about you?', isUser: true },
+    // Simulating random messages for the chat
+    const fakeMessages = [];
+    const people = ['Darwin', 'Person 123', 'Alice', 'Bob'];
+    const messagesArray = [
+      'Hello! How are you?',
+      'I\'m good, thanks!',
+      'Great to hear!',
+      'What are you up to?',
+      'Just working on a project, what about you?',
+      'How is everything going?',
+      'Have you seen that new show?',
+      'What do you think of the new update?',
+      'Let\'s catch up soon!'
     ];
 
+    // Generate 20 random messages
+    for (let i = 0; i < 20; i++) {
+      const randomSender = people[Math.floor(Math.random() * people.length)];
+      const randomMessage =
+        messagesArray[Math.floor(Math.random() * messagesArray.length)];
+      const isUser = randomSender === 'Darwin';
+
+      fakeMessages.push({
+        id: i + 1, // Unique ID for each message
+        sender: randomSender,
+        text: randomMessage,
+        isUser: isUser
+      });
+    }
+
     setMessages(fakeMessages);
-  }, []);
+  }, [chatRoomId]);
+
+  useEffect(() => {
+    // Scroll to the bottom when new messages are added
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); // Trigger scroll when messages change
 
   const sendMessage = () => {
 
@@ -68,9 +73,16 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
     }
   };
 
+  useEffect(() => {
+    // Scroll to the bottom when new messages are added
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); // Trigger scroll when messages change
+
   return (
     <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
-      
+
       {/* Header */}
       <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
         Chatting with: {chatRoomId}
@@ -86,8 +98,9 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
             <div
               className={`bg-${message.isUser ? 'cyan' : 'gray'}-700 text-white p-2 rounded-lg max-w-xs`}
             >
-              <strong>{message.sender}: </strong>{message.text}
+              {message.text}
             </div>
+            <div ref={messagesEndRef}></div>
           </div>
         ))}
       </div>
@@ -107,7 +120,7 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
         <button
           onClick={sendMessage}
           className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-full"
-        >
+        ><div ref={messagesEndRef} />
           Send
         </button>
       </div>
