@@ -4,11 +4,14 @@ interface ChatItemProps {
 }
 
 
-export default function ChatItem({ name }: ChatItemProps) {
+export default function ChatItem({ name,lastMessage }: ChatItemProps) {
   return (
-    <div className="px-4 py-3 mx-2 my-1 rounded-2xl bg-blue-500 cursor-pointer">
-      <div className=" text-base font-medium truncate">{name}</div>
-    </div>
+      <div className="flex flex-col">
+        <div className="flex justify-between items-center">
+          <span className="text-white text-lg font-semibold">{name}</span>
+        </div>
+        <span className="text-gray-400 text-sm">{lastMessage}</span>
+      </div>
   );
 }
 

@@ -8,29 +8,31 @@ export default function Chat() {
   const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
-    const newPerson: Person = {
-      id: 'paras',
-      name: 'New Person',
-      lastMessage: 'Hi there!'
-    };
-    const newPerson2: Person = {
-      id: 'darwin',
-      name: 'New Person',
-      lastMessage: 'Hi there!'
-    };
+    // Generate 1000 fake persons
+    const fakePersons: Person[] = [];
 
-    setPersons(prevPersons => [...prevPersons, newPerson]);
-    setPersons(prevPersons => [...prevPersons, newPerson2]);
+    for (let i = 1; i <= 1000; i++) {
+      fakePersons.push({
+        id: `person-${i}`,
+        name: `Person ${i}`,
+        lastMessage: `Hello from person ${i}!`
+      });
+    }
+
+    setPersons(fakePersons);
   }, []);
-
   return (
     <div className="flex">
       {/* Chat List */}
-      <ChatList persons={persons} onSelectPerson={setChatRoomID} />
+      <ChatList persons={persons} setChatRoomID={setChatRoomID} />
+
+      {/* Green Vertical Divider */}
+      <div className="border-l border-gray-500 h-screen"></div> {/* Ensuring proper vertical divider */}
 
       {/* Main Chat Screen */}
       <MainChatScreen chatRoomId={chatRoomId} />
     </div>
   );
 }
+
 
