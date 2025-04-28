@@ -10,6 +10,9 @@ import (
 
 func (h *Handlers) AuthenticationMiddleware(next customHttpHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+    
+
+
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			http.Error(w, "Authorization header required", http.StatusUnauthorized)

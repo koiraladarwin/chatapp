@@ -18,7 +18,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Simulating random messages for the chat
     const fakeMessages = [];
     const people = ['Darwin', 'Person 123', 'Alice', 'Bob'];
     const messagesArray = [
@@ -33,7 +32,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       'Let\'s catch up soon!'
     ];
 
-    // Generate 20 random messages
     for (let i = 0; i < 20; i++) {
       const randomSender = people[Math.floor(Math.random() * people.length)];
       const randomMessage =
@@ -41,7 +39,7 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       const isUser = randomSender === 'Darwin';
 
       fakeMessages.push({
-        id: i + 1, // Unique ID for each message
+        id: i + 1,
         sender: randomSender,
         text: randomMessage,
         isUser: isUser
@@ -52,15 +50,12 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   }, [chatRoomId]);
 
   useEffect(() => {
-    // Scroll to the bottom when new messages are added
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "instant" });
     }
-  }, [messages]); // Trigger scroll when messages change
+  }, [messages]);
 
   const sendMessage = () => {
-
-    //this should be send to api and update it only after recieving it back from websockets
     if (inputMessage.trim() !== '') {
       const newMessage: Message = {
         id: messages.length + 1,
@@ -72,13 +67,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       setInputMessage('');
     }
   };
-
-  useEffect(() => {
-    // Scroll to the bottom when new messages are added
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]); // Trigger scroll when messages change
 
   return (
     <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
