@@ -32,7 +32,7 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       'Let\'s catch up soon!'
     ];
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 200; i++) {
       const randomSender = people[Math.floor(Math.random() * people.length)];
       const randomMessage =
         messagesArray[Math.floor(Math.random() * messagesArray.length)];
@@ -67,7 +67,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       setInputMessage('');
     }
   };
-
   return (
     <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
 
@@ -78,19 +77,20 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
 
       {/* Messages List */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 max-h-[calc(100vh-150px)]">
-        {messages.map((message) => (
-          <div
+        {messages.map((message) => {
+          console.log(message)
+          return (<div
             key={message.id}
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`bg-${message.isUser ? 'cyan' : 'gray'}-700 text-white p-2 rounded-lg max-w-xs`}
-            >
+              className={`${message.isUser ? 'bg-blue-700' : 'bg-gray-700'
+                } text-white p-2 rounded-lg max-w-xs`}            >
               {message.text}
             </div>
             <div ref={messagesEndRef}></div>
-          </div>
-        ))}
+          </div>)
+        })}
       </div>
 
       {/* Message Input */}

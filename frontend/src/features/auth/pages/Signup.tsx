@@ -23,7 +23,6 @@ export default function Signup() {
 
   const onSubmit = (data: SignupFormData) => {
     console.log(data)
-    // Validate password match manually
     if (data.password !== data.confirmPassword) {
       setError("confirmPassword", {
         type: "manual",
@@ -35,13 +34,12 @@ export default function Signup() {
     mutate(
       { Name: data.name, Email: data.email, Password: data.password, Age: data.age },
       {
-        onSuccess: (response) => {
-          console.log("Signup successful", response);
+        onSuccess: (_) => {
           navigate("/login");
         },
         onError: (err) => {
-          console.error("Signup error", err);
-        },
+          alert(err)
+        }
       }
     );
   };

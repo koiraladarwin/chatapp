@@ -1,38 +1,67 @@
-import { useEffect, useState } from "react";
-import ChatList from "../components/ChatList";
-import { Person } from "../models/chatModels";
-import MainChatScreen from "../components/ChatScreen";
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import ChatList from '../components/ChatList';
+import MainChatScreen from '../components/ChatScreen';
+import { useGetChatRooms } from '../hooks/useChatRooms';
+import { Person } from '../models/chatModels';
 
 export default function Chat() {
   const [chatRoomId, setChatRoomID] = useState<string>('default');
   const [persons, setPersons] = useState<Person[]>([]);
+  const navigate = useNavigate();
+
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+  } = useGetChatRooms();
 
   useEffect(() => {
-    // Generate 1000 fake persons
-    const fakePersons: Person[] = [];
-
-    for (let i = 1; i <= 1000; i++) {
-      fakePersons.push({
-        id: `person-${i}`,
-        name: `Person ${i}`,
-        lastMessage: `Hello from person ${i}!`
-      });
+    // Redirect to login if token doesn't exist
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      navigate('/login');
+      return;
     }
 
-    setPersons(fakePersons);
-  }, []);
+    if (isError) {
+      console.error(error);
+      navigate('/login');
+      return;
+    }
+
+    if (!data) {
+      console.log("no data")
+    }
+
+    if (data) {
+      console.log(data)
+      const formattedPersons = data.map((room) => ({
+        name: "batman",
+        id: room.id,
+        lastMessage: room.created_at,
+      }));
+
+      setPersons(formattedPersons);
+    }
+  }, [data, error, isError, navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex">
       {/* Chat List */}
       <ChatList persons={persons} setChatRoomID={setChatRoomID} />
 
       {/* Green Vertical Divider */}
-      <div className="border-l border-gray-500 h-screen"></div> {/* Ensuring proper vertical divider */}
+      <div className="border-l border-gray-500 h-screen"></div>
 
       {/* Main Chat Screen */}
       <MainChatScreen chatRoomId={chatRoomId} />
     </div>
   );
 }
-
 

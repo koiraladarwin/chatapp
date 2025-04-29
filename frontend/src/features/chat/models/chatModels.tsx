@@ -1,5 +1,5 @@
 export interface Person {
-  id:string;
+  id:number;
   name: string;
   lastMessage: string;
 }
