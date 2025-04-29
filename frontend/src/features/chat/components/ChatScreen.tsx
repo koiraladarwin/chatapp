@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useWebSocket } from "../hooks/useWebSocket";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -16,38 +17,32 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const [inputMessage, setInputMessage] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  //this should be in protobuf . fix that darwin
+  const handleIncomingMessage = useCallback((event: MessageEvent) => {
+    const data = JSON.parse(event.data);
+    const newMessage: Message = {
+      id: Date.now(),
+      sender: data.sender,
+      text: data.text,
+      isUser: data.sender === "Darwin"
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  }, []);
 
-  useEffect(() => {
-    const fakeMessages = [];
-    const people = ['Darwin', 'Person 123', 'Alice', 'Bob'];
-    const messagesArray = [
-      'Hello! How are you?',
-      'I\'m good, thanks!',
-      'Great to hear!',
-      'What are you up to?',
-      'Just working on a project, what about you?',
-      'How is everything going?',
-      'Have you seen that new show?',
-      'What do you think of the new update?',
-      'Let\'s catch up soon!'
-    ];
 
-    for (let i = 0; i < 200; i++) {
-      const randomSender = people[Math.floor(Math.random() * people.length)];
-      const randomMessage =
-        messagesArray[Math.floor(Math.random() * messagesArray.length)];
-      const isUser = randomSender === 'Darwin';
+  const { sendMessage: sendSocketMessage } = useWebSocket(chatRoomId, handleIncomingMessage);
 
-      fakeMessages.push({
-        id: i + 1,
-        sender: randomSender,
-        text: randomMessage,
-        isUser: isUser
-      });
+  const sendMessage = () => {
+    if (inputMessage.trim() !== '') {
+      const outgoing = {
+        sender: "Darwin",
+        text: inputMessage
+      };
+      sendSocketMessage(JSON.stringify(outgoing));
+      setInputMessage('');
     }
-
-    setMessages(fakeMessages);
-  }, [chatRoomId]);
+  };
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -55,18 +50,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
     }
   }, [messages]);
 
-  const sendMessage = () => {
-    if (inputMessage.trim() !== '') {
-      const newMessage: Message = {
-        id: messages.length + 1,
-        sender: 'Darwin',
-        text: inputMessage,
-        isUser: true
-      };
-      setMessages(prev => [...prev, newMessage]);
-      setInputMessage('');
-    }
-  };
   return (
     <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
 

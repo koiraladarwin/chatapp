@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"context"
+	"net/http"
 	"github.com/batmanboxer/chatapp/api/features/authentication"
 	"github.com/batmanboxer/chatapp/common"
-	"net/http"
 )
 
 func (h *Handlers) AuthenticationMiddleware(next customHttpHandler) http.HandlerFunc {
@@ -35,6 +35,5 @@ func (h *Handlers) AuthenticationMiddleware(next customHttpHandler) http.Handler
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-
 	}
 }

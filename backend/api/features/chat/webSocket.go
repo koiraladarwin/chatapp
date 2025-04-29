@@ -78,7 +78,7 @@ func (h *WebSocketManager) removeClient(chatRoomId string, userId string) {
 }
 
 func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
-
+  
 	for {
 		messageType, p, err := client.Conn.ReadMessage()
 		if err != nil {
@@ -97,13 +97,13 @@ func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
 		//   client.Closech<-struct{}{}
 		//   break
 		// }
-
+    
 		message := models.MessageModel{
 			RoomId:   roomId,
 			Text:     string(p),
 			SenderId: client.Id,
 		}
-
+    log.Print(message)
 		err = h.ChatStorage.AddMessage(message)
 
 		if err != nil {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/batmanboxer/chatapp/common"
+	auth "github.com/batmanboxer/chatapp/api/features/authentication"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -19,16 +19,28 @@ var upgrader = websocket.Upgrader{
 }
 
 func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) error {
-	vars := mux.Vars(r)
-	chatroomId := vars["id"]
-	userId := r.Context().Value(common.CONTEXTUSERIDKEY)
-	stringUserId, ok := userId.(string)
 
-	if !ok {
-		return errors.New("User Id Invalid")
+	token := r.URL.Query().Get("token")
+	if token == "" {
+		http.Error(w, "JWT token is required", http.StatusUnauthorized)
+		return nil
+	}
+	userId, err := auth.ValidateJwt(token)
+	if err != nil {
+		http.Error(w, "Invalid JWT", http.StatusUnauthorized)
+		return nil
 	}
 
-	userUuid, err := uuid.Parse(stringUserId)
+	_, err = h.AuthManager.AuthGetUserById(userId)
+	if err != nil {
+		http.Error(w, "User Account Is Deleted By Admin", http.StatusUnauthorized)
+		return nil
+	}
+
+	vars := mux.Vars(r)
+	chatroomId := vars["id"]
+
+	userUuid, err := uuid.Parse(userId)
 	if err != nil {
 		return errors.New("User Id Invalid")
 	}
@@ -52,6 +64,6 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	h.ChatManager.WebsocketAddClient(conn, chatroomId, stringUserId)
+	h.ChatManager.WebsocketAddClient(conn, chatroomId, userId)
 	return nil
 }

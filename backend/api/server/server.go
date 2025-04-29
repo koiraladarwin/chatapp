@@ -49,7 +49,7 @@ func (api *Api) StartApi() {
 	mux.HandleFunc("/login", handlers.DefaultMiddleware(handlers.LoginHandler))
 	mux.HandleFunc("/signup", handlers.DefaultMiddleware(handlers.SignUpHandler))
 	mux.HandleFunc("/validate", handlers.DefaultMiddleware(handlers.ValidateHanlder))
-	mux.HandleFunc("/listen/{id}", handlers.AuthenticationMiddleware(handlers.WebsocketHandler))
+	mux.HandleFunc("/listen/{id}", handlers.DefaultMiddleware(handlers.WebsocketHandler))
 	mux.HandleFunc("/addchatroom", handlers.AuthenticationMiddleware(handlers.AddChatRoomHanlder))
 	mux.HandleFunc("/getchatrooms", handlers.AuthenticationMiddleware(handlers.GetUserChatRoomsHanlder))
 

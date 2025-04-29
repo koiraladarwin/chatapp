@@ -5,7 +5,6 @@ import Signup from './features/auth/pages/Signup'
 import Chat from './features/chat/pages/Chat'
 
 function App() {
-
   return (
     <Routes>
       <Route path="/" ></Route>

@@ -48,7 +48,7 @@ export default function Chat() {
   }, [data, error, isError, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='bg-gray-900 h-[100vh] text-white flex w-[100vw] justify-center items-center'>Loading...</div>;
   }
 
   return (
@@ -56,7 +56,7 @@ export default function Chat() {
       {/* Chat List */}
       <ChatList persons={persons} setChatRoomID={setChatRoomID} />
 
-      {/* Green Vertical Divider */}
+      {/* Gray Vertical Divider */}
       <div className="border-l border-gray-500 h-screen"></div>
 
       {/* Main Chat Screen */}
