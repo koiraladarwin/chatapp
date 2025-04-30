@@ -1,4 +1,4 @@
-protofile:
+pinrotofile:
 	@cd proto && protoc --go_out=../backend --go-grpc_out=../backend --proto_path=./ chat.proto
 
 buildbackend:

@@ -1,5 +1,7 @@
 {
-  "files": [],
+  "compilerOptions": {
+    "types": ["google-protobuf"]
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
