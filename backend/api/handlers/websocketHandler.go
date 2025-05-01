@@ -49,6 +49,7 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 
 	if err != nil {
 		log.Println("Invalid Room id")
+		log.Println(err)
 		return errors.New("Invalid Room Id")
 	}
 

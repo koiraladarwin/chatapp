@@ -35,7 +35,7 @@ func (h *WebSocketManager) addClient(chatRoomId string, client *models.Client) {
 
 	go h.deliverMessage(client)
 	go h.listenMessage(chatRoomId, client)
-  go h.sendPingLoop(client)
+	go h.sendPingLoop(client)
 
 }
 
@@ -78,7 +78,6 @@ func (h *WebSocketManager) removeClient(chatRoomId string, userId string) {
 }
 
 func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
-  
 	for {
 		messageType, p, err := client.Conn.ReadMessage()
 		if err != nil {
@@ -97,13 +96,14 @@ func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
 		//   client.Closech<-struct{}{}
 		//   break
 		// }
-    
+
 		message := models.MessageModel{
 			RoomId:   roomId,
 			Text:     string(p),
 			SenderId: client.Id,
 		}
-    log.Print(message)
+
+		log.Print(message)
 		err = h.ChatStorage.AddMessage(message)
 
 		if err != nil {
@@ -150,6 +150,7 @@ func (h *WebSocketManager) deliverMessage(client *models.Client) {
 
 		sendMessage, err := proto.Marshal(sendMessageSchema)
 
+		log.Println("sennding message")
 		if err != nil {
 			log.Println("unable to marshal protocol buffer")
 			continue
@@ -165,11 +166,9 @@ func (h *WebSocketManager) deliverMessage(client *models.Client) {
 }
 
 func (h *WebSocketManager) sendPingLoop(client *models.Client) {
-	lastPong := time.Now()
 
 	client.Conn.SetPongHandler(func(appData string) error {
 		log.Println("Pong received")
-		lastPong = time.Now()
 		return nil
 	})
 
@@ -182,14 +181,6 @@ func (h *WebSocketManager) sendPingLoop(client *models.Client) {
 		err := client.Conn.WriteMessage(websocket.PingMessage, []byte("ping"))
 		if err != nil {
 			log.Println("Ping failed:", err)
-			client.Closech <- struct{}{}
-			return
-		}
-
-		time.Sleep(10 * time.Second)
-
-		if time.Since(lastPong) > 10*time.Second {
-			log.Println("Pong not received in time, disconnecting")
 			client.Closech <- struct{}{}
 			return
 		}

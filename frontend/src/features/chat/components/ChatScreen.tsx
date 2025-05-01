@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useWebSocket } from "../hooks/useWebSocket";
+import { chat } from "../../../proto/chat";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -17,15 +18,14 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const [inputMessage, setInputMessage] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   //this should be in protobuf . fix that darwin
-  const handleIncomingMessage = useCallback((event: MessageEvent) => {
-    const data = JSON.parse(event.data);
+  const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
       id: Date.now(),
-      sender: data.sender,
-      text: data.text,
-      isUser: data.sender === "Darwin"
+      sender: message.user_id,
+      text: message.content,
+      isUser: false
     };
     setMessages((prev) => [...prev, newMessage]);
   }, []);
@@ -34,14 +34,19 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const { sendMessage: sendSocketMessage } = useWebSocket(chatRoomId, handleIncomingMessage);
 
   const sendMessage = () => {
-    if (inputMessage.trim() !== '') {
-      const outgoing = {
-        sender: "Darwin",
-        text: inputMessage
-      };
-      sendSocketMessage(JSON.stringify(outgoing));
-      setInputMessage('');
+    if (inputMessage.trim() === '') {
+      return;
     }
+    console.log("reacher here")
+    const message = new chat.ChatMessage({
+      type: chat.MessageType.TEXT,
+      content: inputMessage.trim(),
+      user_id: "Darwin",
+      timestamp: Date.now(),
+    })
+    sendSocketMessage(message);
+
+    setInputMessage("")
   };
 
   useEffect(() => {
@@ -52,7 +57,6 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
 
   return (
     <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
-
       {/* Header */}
       <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
         Chatting with: {chatRoomId}
