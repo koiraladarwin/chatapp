@@ -29,14 +29,15 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 
 	_, err = h.AuthManager.AuthGetUserById(user2.String())
 	if err != nil {
-		w.Write([]byte("User Doesnt Exists"))
-    return nil
+		http.Error(w, "User Doesnt Exists", http.StatusNotFound)
+		return nil
 	}
-	exists := h.ChatManager.CheckChatRoomExistsBtnUsers(user1, user2)
+
+	exists := h.ChatManager.CheckChatRoomExistsBtwnUsers(user1, user2)
 
 	if exists {
-		w.Write([]byte("Chat Room Already Exists"))
-    return nil
+		http.Error(w, "User Doesnt Exists", http.StatusConflict)
+		return nil
 	}
 
 	users := []uuid.UUID{}
@@ -47,11 +48,11 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 	err = h.ChatManager.AddChatRoom(users)
 
 	if err != nil {
-		return err
+		http.Error(w, "User Doesnt Exists", http.StatusInternalServerError)
+		return nil
 	}
 
-	//todo make a custom writer to the http connection
-	w.Write([]byte("done"))
+	w.Write([]byte("User Added to Chat Room"))
 
 	return nil
 }

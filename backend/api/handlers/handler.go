@@ -11,7 +11,7 @@ type ChatService interface {
 	WebsocketAddClient(conn *websocket.Conn, chatRoomId string, userId string)
 	AddChatRoom(users []uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
-	CheckChatRoomExistsBtnUsers(uuid.UUID, uuid.UUID) bool
+	CheckChatRoomExistsBtwnUsers(uuid.UUID, uuid.UUID) bool
 	CheckChatRoomExists(uuid.UUID,int)bool
 }
 

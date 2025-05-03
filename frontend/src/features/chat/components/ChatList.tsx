@@ -17,9 +17,17 @@ export default function ChatList({ persons, setChatRoomID }: ChatListProps) {
   return (
     <div className="flex-4/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen">
 
-      <div className="p-4 bg-gray-800 text-white text-3xl font-bold ">
-        Darwin Chat
+      <div className="p-4 text-white text-3xl font-bold flex justify-between items-center">
+        <div>
+          Darwin Chat
+        </div>
+        <div className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
+          Add
+        </div>
       </div>
+
+
+      
 
       {/* Search Bar */}
       <div className="mb-4">
@@ -37,7 +45,7 @@ export default function ChatList({ persons, setChatRoomID }: ChatListProps) {
         {filteredPersons.map((person) => (
           <div
             key={person.id}
-            onClick={() => setChatRoomID(person.id)}
+            onClick={() => setChatRoomID(person.id.toString())}
             className="hover:bg-gray-700 cursor-pointer p-2 rounded-lg"
           >
             <ChatItem name={person.name} lastMessage={person.lastMessage} />

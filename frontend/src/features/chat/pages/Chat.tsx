@@ -4,6 +4,7 @@ import ChatList from '../components/ChatList';
 import MainChatScreen from '../components/ChatScreen';
 import { useGetChatRooms } from '../hooks/useChatRooms';
 import { Person } from '../models/chatModels';
+import AddPerson from '../components/AddPerson';
 
 export default function Chat() {
   const [chatRoomId, setChatRoomID] = useState<string>('default');
@@ -52,7 +53,11 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex relative">
+      {/*Add Person */}
+      <div className="absolute w-screen h-screen flex z-1">
+        <AddPerson/> 
+      </div>
       {/* Chat List */}
       <ChatList persons={persons} setChatRoomID={setChatRoomID} />
 

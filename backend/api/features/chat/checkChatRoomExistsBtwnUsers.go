@@ -4,7 +4,7 @@ import "slices"
 
 import "github.com/google/uuid"
 
-func (h *WebSocketManager) CheckChatRoomExistsBtnUsers(user1 uuid.UUID, user2 uuid.UUID) bool {
+func (h *WebSocketManager) CheckChatRoomExistsBtwnUsers(user1 uuid.UUID, user2 uuid.UUID) bool {
 	chatRooms, err := h.GetChatRoomsByUser(user1)
 
 	if err != nil {
