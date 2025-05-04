@@ -12,6 +12,7 @@ func (h *Handlers) GetUsersByName(w http.ResponseWriter, r *http.Request) error 
 	if err != nil {
 		http.Error(w, "No User With This Name Exists", http.StatusNotFound)
 	}
+
 	utils.WriteJson(w, users)
 	return nil
 }

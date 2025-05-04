@@ -37,4 +37,12 @@ type AccountModel struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type ResponseAccountModel struct {
+	ID        uuid.UUID `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Verified  bool      `json:"verified"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 

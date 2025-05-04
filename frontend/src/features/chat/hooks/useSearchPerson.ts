@@ -1,26 +1,17 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 export interface PersonData {
-  id: number;
+  name:string;
+  id: string;
   created_at: string;
-  user_ids: string[];
 }
 
-const getPersonData = async (): Promise<PersonData[]> => {
-  const token = localStorage.getItem('jwt');
-  if (!token) {
-    throw new Error('No JWT token found');
-  }
-
-  const response = await fetch('http://localhost:4000/getchatrooms', {
-    headers: {
-      Authorization:`${token}`,
-    },
-  });
+const getPersonData = async (name: string): Promise<PersonData[]> => {
+  const response = await fetch(`http://localhost:4000/getusers?name=${encodeURIComponent(name)}`);
 
   if (!response.ok) {
     if (response.status === 401 || response.status === 403) {
-      //localStorage.removeItem('jwt');
       throw new Error('Session expired. Please log in again.');
     }
     throw new Error('Failed to fetch chat rooms.');
@@ -29,10 +20,24 @@ const getPersonData = async (): Promise<PersonData[]> => {
   return response.json();
 };
 
-export const useGetChatRooms = () => {
-  return useQuery<PersonData[], Error>({
-    queryKey: ['chat_rooms'],
-    queryFn: getPersonData,
-    enabled: true,
+const useDebouncedValue = (value: string, delay: number) => {
+  const [debounced, setDebounced] = useState(value);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+};
+
+export const useGetChatRooms = (name: string) => {
+  const debouncedName = useDebouncedValue(name, 300);
+
+  return useQuery({
+    queryKey: ['chat_rooms', debouncedName],
+    queryFn: () => getPersonData(debouncedName),
+    enabled: debouncedName.trim() !== '',
   });
 };
+

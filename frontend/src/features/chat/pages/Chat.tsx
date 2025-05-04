@@ -5,10 +5,13 @@ import MainChatScreen from '../components/ChatScreen';
 import { useGetChatRooms } from '../hooks/useChatRooms';
 import { Person } from '../models/chatModels';
 import AddPerson from '../components/AddPerson';
+import { useAddChatRoom } from '../hooks/useAddChatRoom';
 
 export default function Chat() {
   const [chatRoomId, setChatRoomID] = useState<string>('default');
   const [persons, setPersons] = useState<Person[]>([]);
+  const [addPersonScreen, setAddPersonScreen] = useState<Boolean>(true)
+  const { mutate } = useAddChatRoom();
   const navigate = useNavigate();
 
   const {
@@ -16,10 +19,20 @@ export default function Chat() {
     error,
     isLoading,
     isError,
+    refetch
   } = useGetChatRooms();
 
+  function addChatRoom(name: string) {
+    mutate(name, {
+      onSuccess: () => {
+        setAddPersonScreen(false)
+        refetch()
+      }
+    })
+  }
+
+
   useEffect(() => {
-    // Redirect to login if token doesn't exist
     const token = localStorage.getItem('jwt');
     if (!token) {
       navigate('/login');
@@ -46,18 +59,24 @@ export default function Chat() {
 
       setPersons(formattedPersons);
     }
-  }, [data, error, isError, navigate]);
+  }, [data, error, isError]);
 
   if (isLoading) {
     return <div className='bg-gray-900 h-[100vh] text-white flex w-[100vw] justify-center items-center'>Loading...</div>;
   }
 
+
   return (
     <div className="flex relative">
       {/*Add Person */}
-      <div className="absolute w-screen h-screen flex z-1">
-        <AddPerson/> 
-      </div>
+
+      {addPersonScreen &&
+        <div className="absolute w-screen h-screen flex z-1">
+          <AddPerson clicked={addChatRoom} hide={()=>{setAddPersonScreen(false)}} />
+        </div>
+
+      }
+
       {/* Chat List */}
       <ChatList persons={persons} setChatRoomID={setChatRoomID} />
 

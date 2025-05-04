@@ -10,10 +10,10 @@ import (
 type ChatService interface {
 	WebsocketAddClient(conn *websocket.Conn, chatRoomId string, userId string)
 	AddChatRoom(users []uuid.UUID) error
-	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
+	GetChatRoomsByUser(uuid.UUID) ([]*models.ResponseChatRoom, error)
 	CheckChatRoomExistsBtwnUsers(uuid.UUID, uuid.UUID) bool
 	CheckChatRoomExists(uuid.UUID, int) bool
-	GetUsersByName(string) ([]models.AccountModel, error)
+	GetUsersByName(string) ([]models.ResponseAccountModel, error)
 }
 
 type AuthService interface {

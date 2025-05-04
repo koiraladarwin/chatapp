@@ -28,6 +28,7 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 	user2 := user2Data.Participant
 
 	_, err = h.AuthManager.AuthGetUserById(user2.String())
+
 	if err != nil {
 		http.Error(w, "User Doesnt Exists", http.StatusNotFound)
 		return nil

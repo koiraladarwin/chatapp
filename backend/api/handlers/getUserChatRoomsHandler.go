@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"github.com/batmanboxer/chatapp/common"
 	"github.com/batmanboxer/chatapp/internal/utils"
@@ -24,6 +25,8 @@ func (h *Handlers) GetUserChatRoomsHanlder(w http.ResponseWriter, r *http.Reques
 
 	chatRooms, err := h.ChatManager.GetChatRoomsByUser(uuidUserId)
 	if err != nil {
+		log.Println("here is error")
+		log.Println(err.Error())
 		return err
 	}
 
