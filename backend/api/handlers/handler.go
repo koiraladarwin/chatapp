@@ -12,7 +12,8 @@ type ChatService interface {
 	AddChatRoom(users []uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
 	CheckChatRoomExistsBtwnUsers(uuid.UUID, uuid.UUID) bool
-	CheckChatRoomExists(uuid.UUID,int)bool
+	CheckChatRoomExists(uuid.UUID, int) bool
+	GetUsersByName(string) ([]models.AccountModel, error)
 }
 
 type AuthService interface {

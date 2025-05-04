@@ -12,7 +12,7 @@ type Postgres struct {
 	db *sql.DB
 }
 
-func NewPostGres(dbName string,connStr string) (*Postgres, error) {
+func NewPostGres(dbName string, connStr string) (*Postgres, error) {
 
 	db, err := sql.Open(dbName, connStr)
 
@@ -79,6 +79,31 @@ func (postgres *Postgres) GetUserByEmail(email string) (models.AccountModel, err
 		return account, err
 	}
 	return account, nil
+}
+
+func (postgres *Postgres) GetUsersByName(name string) ([]models.AccountModel, error) {
+	accounts := []models.AccountModel{}
+	query := `SELECT * FROM users WHERE name ILIKE $1 LIMIT 20`
+
+	rows, err := postgres.db.Query(query, "%"+name+"%")
+	if err != nil {
+		return accounts, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		account := models.AccountModel{}
+		if err := rows.Scan(&account.ID, &account.Name, &account.Email, &account.Password, &account.Verified, &account.CreatedAt); err != nil {
+			return accounts, err
+		}
+		accounts = append(accounts, account)
+	}
+
+	if err := rows.Err(); err != nil {
+		return accounts, err
+	}
+
+	return accounts, nil
 }
 
 func (postgres *Postgres) GetUserById(id string) (models.AccountModel, error) {

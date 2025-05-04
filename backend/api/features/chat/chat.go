@@ -11,4 +11,5 @@ type ChatStorage interface {
 	CreateChatRoom([]uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
 	RemoveUserFromRoom(int, int) error
+	GetUsersByName(string)([]models.AccountModel, error)
 }
