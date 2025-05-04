@@ -26,9 +26,6 @@ export default function ChatList({ persons, setChatRoomID }: ChatListProps) {
         </div>
       </div>
 
-
-      
-
       {/* Search Bar */}
       <div className="mb-4">
         <input

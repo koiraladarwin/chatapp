@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 export interface ChatRoomResponse {
   id: string;
   created_at: string;
-  user_ids: string[];
+  user_id: string;
+  name:string;
 }
 
 const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
@@ -14,7 +15,7 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
 
   const response = await fetch('http://localhost:4000/getchatrooms', {
     headers: {
-      Authorization:`${token}`,
+      Authorization: `${token}`,
       'Content-Type': 'application/json',
     },
   });

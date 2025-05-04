@@ -52,7 +52,7 @@ export default function Chat() {
     if (data) {
       console.log(data)
       const formattedPersons = data.map((room) => ({
-        name: "batman",
+        name: room.name,
         id: room.id,
         lastMessage: room.created_at,
       }));
