@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ChatList from '../components/ChatList';
-import MainChatScreen from '../components/ChatScreen';
+import ChatScreen from '../components/ChatScreen';
 import { useGetChatRooms } from '../hooks/useChatRooms';
 import { Person } from '../models/chatModels';
 import AddPerson from '../components/AddPerson';
@@ -84,7 +84,7 @@ export default function Chat() {
       <div className="border-l border-gray-500 h-screen"></div>
 
       {/* Main Chat Screen */}
-      <MainChatScreen chatRoomId={chatRoomId} />
+      <ChatScreen chatRoomId={chatRoomId} />
     </div>
   );
 }

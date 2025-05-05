@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { chat } from "../../../proto/chat";
 import { useGetChats } from "../hooks/useGetChats";
+import useGetId from "../../common/hook/useGetId";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -13,10 +14,11 @@ interface Message {
   isUser: boolean;
 }
 
-export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
+export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const { isSuccess, data: chats = [] } = useGetChats(chatRoomId)
+  const userId = useGetId();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
       const storedMessages: Message[] = chats.map((chat) => ({
         id: parseInt(chat.id),
         text: chat.message,
-        isUser: false
+        isUser: chat.sender_id == userId
       }));
       setMessages(storedMessages.reverse());
     }
@@ -33,9 +35,10 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   //this should be in protobuf . fix that darwin
   const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
-      id: Date.now(),
+      //messages.legth + 1 is just hacky and not good practise i guess
+      id: messages.length+1,
       text: message.content,
-      isUser: false
+      isUser: message.user_id == userId
     };
     setMessages((prev) => [...prev, newMessage]);
   }, []);
