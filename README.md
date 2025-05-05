@@ -15,7 +15,7 @@
 
 1. **Clone the repository:**
    ```
-   git clone <repo-url>
+   git clone https://github.com/koiraladarwin/chatapp
    cd chatapp
    ```
 
