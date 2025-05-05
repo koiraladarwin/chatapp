@@ -26,9 +26,10 @@ export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
         text: chat.message,
         isUser: false
       }));
-      setMessages(storedMessages);
+      setMessages(storedMessages.reverse());
     }
-  }, [isSuccess, chats]);
+  }, [isSuccess]);
+
   //this should be in protobuf . fix that darwin
   const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
