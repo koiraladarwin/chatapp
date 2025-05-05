@@ -11,37 +11,50 @@
 - **protoc-gen-ts** (for TypeScript gRPC stubs)
 - **Make** (for running makefile targets)
 
-### Build Steps
+### 🚀 Build & Run Guide
 
-1. **Clone the repository:**
-   ```
-   git clone https://github.com/koiraladarwin/chatapp
-   cd chatapp
-   ```
+Follow these steps to set up and run the full stack application:
 
-2. **Generate gRPC/Protobuf code:**
-   ```
-   make cprotofile(optional since this is already complied)
-   ```
-   - This generates Go and TypeScript code from `proto/chat.proto` for backend and frontend communication.
+---
 
-3. **Build the backend:**
-   ```
-   make buildbackend
-   ```
-   - Compiles the Go backend and outputs the binary to `bin/chatapp`.
+### 1. **Clone the repository**
+```
+git clone https://github.com/koiraladarwin/chatapp
+cd chatapp
+```
+---
 
-4. **Start the frontend (development mode):**
-   ```
-   make devfrontend
-   ```
-   - Installs dependencies and starts the Vite dev server for the React frontend.
+### 2. **(Optional) Generate gRPC/Protobuf code**
+```
+make compileproto
+```
+This regenerates Go and TypeScript code from `proto/chat.proto` for backend and frontend communication.
 
-5. **Run the full stack (backend + frontend):**
-   ```
-   make run
-   ```
-   - Runs both the backend and the frontend dev server concurrently.
+> ✅ You can skip this step if the generated files are already up to date.
+
+---
+
+### 3. **Build the backend**
+```
+make build-backend
+```
+Compiles the Go backend and places the output binary at `bin/chatapp`.
+
+---
+
+### 4. **Install frontend dependencies**
+```
+make build-frontend
+```
+Installs all required npm packages in the frontend directory.
+
+---
+
+### 5. **Run both backend and frontend concurrently**
+```
+make run
+```
+Runs both the Go backend and React frontend in parallel (for development use).
 
 ---
 
