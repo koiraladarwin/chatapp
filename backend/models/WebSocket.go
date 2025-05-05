@@ -8,10 +8,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-type MessageData struct {
-	Message string
-}
-
 type MessageModel struct {
 	Id        string    `json:"id"`
 	SenderId  string    `json:"sender_id"`

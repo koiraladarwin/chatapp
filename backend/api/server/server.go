@@ -53,6 +53,7 @@ func (api *Api) StartApi() {
 	mux.HandleFunc("/addchatroom", handlers.AuthenticationMiddleware(handlers.AddChatRoomHanlder))
 	mux.HandleFunc("/getchatrooms", handlers.AuthenticationMiddleware(handlers.GetUserChatRoomsHanlder))
 	mux.HandleFunc("/getusers", handlers.AuthenticationMiddleware(handlers.GetUsersByName))
+	mux.HandleFunc("/getchats", handlers.AuthenticationMiddleware(handlers.GetChatsHandler))
 
 	fmt.Print("Server Starting in Port 4000")
 	http.ListenAndServe(":4000", mux)

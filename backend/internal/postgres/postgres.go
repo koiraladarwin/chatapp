@@ -123,9 +123,9 @@ func (postgres *Postgres) AddMessage(messageModel models.MessageModel) error {
 	return err
 }
 
-func (postgres *Postgres) GetMessages(chatRoomId string, limit int, offset int) ([]models.MessageModel, error) {
+func (postgres *Postgres) GetMessages(chatRoomId string, offset int ,limit int) ([]models.MessageModel, error) {
 	Messages := []models.MessageModel{}
-	query := `SELECT * FROM chats ORDER BY created_at DESC WHERE room_id = $1 LIMIT $2 OFFSET $3`
+	query := `SELECT * FROM chats WHERE room_id = $1 ORDER BY created_at DESC  LIMIT $2 OFFSET $3`
 	rows, err := postgres.db.Query(query, chatRoomId, limit, offset)
 
 	if err != nil {

@@ -8,12 +8,13 @@ import (
 )
 
 type ChatService interface {
-	WebsocketAddClient(conn *websocket.Conn, chatRoomId string, userId string)
-	AddChatRoom(users []uuid.UUID) error
+	WebsocketAddClient(*websocket.Conn,string,string)
+	AddChatRoom([]uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ResponseChatRoom, error)
 	CheckChatRoomExistsBtwnUsers(uuid.UUID, uuid.UUID) bool
 	CheckChatRoomExists(uuid.UUID, int) bool
-	GetUsersByName(string,string) ([]models.ResponseAccountModel, error)
+	GetUsersByName(string, string) ([]models.ResponseAccountModel, error)
+	GetChatsByChatRoom(uuid.UUID,string) ([]models.MessageModel, error)
 }
 
 type AuthService interface {
