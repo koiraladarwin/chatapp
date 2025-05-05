@@ -4,7 +4,7 @@ import (
 	"github.com/batmanboxer/chatapp/models"
 )
 
-func (h *WebSocketManager) GetUsersByName(name string) ([]models.ResponseAccountModel, error) {
+func (h *WebSocketManager) GetUsersByName(userId string,name string) ([]models.ResponseAccountModel, error) {
 	//check if user had permission to chat that other user and stuff late
 	//i know this is unnessary abtraction but later maybe useful
 
@@ -12,6 +12,9 @@ func (h *WebSocketManager) GetUsersByName(name string) ([]models.ResponseAccount
 	responseAccounts := []models.ResponseAccountModel{}
 
 	for _, account := range accounts {
+    if account.ID.String() == userId {
+      continue 
+    }
 		responseAccount := models.ResponseAccountModel{
       ID: account.ID,
       Name: account.Name,
