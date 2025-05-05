@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { chat } from "../../../proto/chat";
+import { useGetChats } from "../hooks/useGetChats";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -8,7 +9,6 @@ interface MainChatScreenProps {
 
 interface Message {
   id: number;
-  sender: string;
   text: string;
   isUser: boolean;
 }
@@ -16,14 +16,23 @@ interface Message {
 export default function MainChatScreen({ chatRoomId }: MainChatScreenProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
+  const { isSuccess, data: chats = [] } = useGetChats(chatRoomId)
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  useEffect(() => {
+    if (isSuccess && chats.length > 0) {
+      const storedMessages: Message[] = chats.map((chat) => ({
+        id: parseInt(chat.id),
+        text: chat.message,
+        isUser: false
+      }));
+      setMessages(storedMessages);
+    }
+  }, [isSuccess, chats]);
   //this should be in protobuf . fix that darwin
   const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
       id: Date.now(),
-      sender: message.user_id,
       text: message.content,
       isUser: false
     };

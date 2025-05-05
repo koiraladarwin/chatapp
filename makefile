@@ -1,5 +1,6 @@
-pinrotofile:
-	@cd proto && protoc --go_out=../backend --go-grpc_out=../backend --proto_path=./ chat.proto
+cprotofile:
+	@cd proto && protoc --go_out=../backend --go-grpc_out=../backend --proto_path=./ chat.proto &
+	@protoc --plugin=protoc-gen-ts=$(which protoc-gen-ts) --ts_out=./frontend/src/proto --proto_path=./proto ./proto/chat.proto
 
 buildbackend:
 	@cd backend && go build -o ../bin/chatapp ./cmd 
