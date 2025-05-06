@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { auth } from '../../../proto/auth';
 
 interface LoginResponse {
   jwt: string;
@@ -10,12 +11,14 @@ interface LoginInput {
 }
 
 const loginUser = async (data: LoginInput): Promise<LoginResponse> => {
+  const ProtoLoginInput = new auth.LoginDto({email:data.email,password:data.password})
+  const binary = ProtoLoginInput.serializeBinary()
   const response = await fetch('http://localhost:4000/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/octet-stream',
     },
-    body: JSON.stringify(data),
+    body:binary,
   });
 
   if (!response.ok) {

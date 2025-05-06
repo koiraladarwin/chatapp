@@ -1,26 +1,47 @@
 package handlers
 
 import (
-	"encoding/json"
+	"io"
+	"log"
 	"net/http"
+
 	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
+	"github.com/batmanboxer/chatapp/protomodels"
+	"google.golang.org/protobuf/proto"
 )
 
-func(h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
-   
+func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
+
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("Method Not Allowed"))
 		return nil
 	}
-	data := models.LoginData{}
-	err := json.NewDecoder(r.Body).Decode(&data)
+
+	protodata := protomodels.LoginDto{}
+	bodyBytes, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+	err = proto.Unmarshal(bodyBytes, &protodata)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Unknown Data Type Provided"))
 		return nil
+	}
+  log.Print("done this via protobuf")
+	// data := models.LoginDto{}
+	// err = json.NewDecoder(r.Body).Decode(&data)
+	//
+	// if err != nil {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	w.Write([]byte("Unknown Data Type Provided"))
+	// 	return nil
+	// }
+
+	data := models.LoginDto{
+		Email:    protodata.Email,
+		Password: protodata.Password,
 	}
 
 	jwt, err := h.AuthManager.AuthLogin(data)
@@ -35,11 +56,12 @@ func(h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	sucess := models.LoginSucess{
 		Jwt: jwt,
 	}
-  err = utils.WriteJson(w,sucess)
-  
-  if err != nil{
-    return nil 
-  }
+
+	err = utils.WriteJson(w, sucess)
+
+	if err != nil {
+		return nil
+	}
+
 	return nil
 }
-

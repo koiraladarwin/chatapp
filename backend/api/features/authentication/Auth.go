@@ -5,7 +5,7 @@ import (
 )
 
 type AuthStorage interface {
-	AddAccount(models.SignUpData) error
+	AddAccount(models.SignUpDto) error
 	GetUserByEmail(string) (models.AccountModel, error)
 	GetUserById(string) (models.AccountModel, error)
 }

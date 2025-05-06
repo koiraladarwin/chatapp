@@ -6,7 +6,7 @@ import (
 )
 
 type Storage interface {
-	AddAccount(models.SignUpData) error
+	AddAccount(models.SignUpDto) error
 	GetUserByEmail(string) (models.AccountModel, error)
 	GetMessages(string, int, int) ([]models.MessageModel, error)
 	AddMessage(models.MessageModel) error

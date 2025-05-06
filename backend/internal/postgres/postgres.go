@@ -64,7 +64,7 @@ func NewPostGres(dbName string, connStr string) (*Postgres, error) {
 	}, nil
 }
 
-func (postgres *Postgres) AddAccount(signUpData models.SignUpData) error {
+func (postgres *Postgres) AddAccount(signUpData models.SignUpDto) error {
 	addAccountQuery := `INSERT INTO users(name,email,password)VAlUES($1,$2,$3)`
 	_, err := postgres.db.Exec(addAccountQuery, signUpData.Name, signUpData.Email, signUpData.Password)
 

@@ -6,7 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (auth *AuthManager) AuthLogin(loginData models.LoginData) (string, error) {
+func (auth *AuthManager) AuthLogin(loginData models.LoginDto) (string, error) {
 
 	account, err := auth.AuthDb.GetUserByEmail(loginData.Email)
 	if err != nil {

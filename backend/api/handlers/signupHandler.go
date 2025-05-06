@@ -18,7 +18,7 @@ func (handler *Handlers) SignUpHandler(w http.ResponseWriter, r *http.Request) e
 		return nil
 	}
 
-	data := models.SignUpData{}
+	data := models.SignUpDto{}
 	err := utils.ReadJson(r, &data)
 
 	if err != nil {

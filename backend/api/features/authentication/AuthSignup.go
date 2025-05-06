@@ -5,7 +5,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (auth *AuthManager) AuthSignUp(signUpData models.SignUpData) error {
+func (auth *AuthManager) AuthSignUp(signUpData models.SignUpDto) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(signUpData.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
