@@ -49,14 +49,12 @@ export function useWebSocket(
   const sendMessage = (message: chat.ChatMessage) => {
     console.log("reached hook")
     if (socketRef.current?.readyState === WebSocket.OPEN) {
-      const encoded = message.serializeBinary();
-
-      // send encoded protobuf to backend whe you add photo supporrt
-
-      socketRef.current.send(message.content)
+      const binary = message.serializeBinary();
+      socketRef.current.send(binary)
     }
   };
 
   return { sendMessage };
 }
+
 

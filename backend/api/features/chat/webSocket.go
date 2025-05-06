@@ -85,7 +85,7 @@ func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
 			break
 		}
 
-		if messageType != websocket.TextMessage {
+		if messageType != websocket.BinaryMessage {
 			continue
 		}
 
@@ -97,13 +97,20 @@ func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
 		//   break
 		// }
 
+		protoMessage := protomodels.ChatMessage{}
+		err = proto.Unmarshal(p, &protoMessage)
+
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
 		message := models.MessageModel{
 			RoomId:   roomId,
-			Text:     string(p),
+			Text:     protoMessage.Content,
 			SenderId: client.Id,
 		}
 
-		log.Print(message)
 		err = h.ChatStorage.AddMessage(message)
 
 		if err != nil {
@@ -111,7 +118,7 @@ func (h *WebSocketManager) listenMessage(roomId string, client *models.Client) {
 			return
 		}
 
-		h.broadcastMessage(roomId, string(p), client)
+		h.broadcastMessage(roomId,protoMessage.Content, client)
 	}
 }
 

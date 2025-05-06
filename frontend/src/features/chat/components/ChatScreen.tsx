@@ -54,8 +54,8 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
     const message = new chat.ChatMessage({
       type: chat.MessageType.TEXT,
       content: inputMessage.trim(),
-      user_id: "Darwin",
-      timestamp: Date.now(),
+      user_id: "idk",
+      timestamp: 123,
     })
     sendSocketMessage(message);
 
