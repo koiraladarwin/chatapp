@@ -15,7 +15,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	connStr := os.Getenv("POSTGRESS_URL")
+	connStr := os.Getenv("POSTGRES_URL")
 
 	if connStr == "" {
     log.Fatal("Postgress connection string (POSTGRESS_URL) is not set in .env")
