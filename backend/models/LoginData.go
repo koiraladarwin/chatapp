@@ -15,15 +15,14 @@ type SignUpSuccess struct {
 
 // model represents database
 // data represents request and respose
-
-type LoginDto struct {
-	Email    string
-	Password string
+type LoginDto struct{
+  Email string
+  Password string
 }
 
 type SignUpDto struct {
 	Name     string
-	Age      int
+	Age      int32
 	Email    string
 	Password string
 }

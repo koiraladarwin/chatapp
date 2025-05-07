@@ -72,13 +72,15 @@ export default function Chat() {
 
       {addPersonScreen &&
         <div className="absolute w-screen h-screen flex z-1">
-          <AddPerson clicked={addChatRoom} hide={()=>{setAddPersonScreen(false)}} />
+          <AddPerson clicked={addChatRoom} hide={() => { setAddPersonScreen(false) }} />
         </div>
 
       }
 
       {/* Chat List */}
-      <ChatList persons={persons} setChatRoomID={setChatRoomID} />
+      <ChatList persons={persons} setChatRoomID={setChatRoomID} openAddPerson={() => {
+        setAddPersonScreen(true)
+      }} />
 
       {/* Gray Vertical Divider */}
       <div className="border-l border-gray-500 h-screen"></div>

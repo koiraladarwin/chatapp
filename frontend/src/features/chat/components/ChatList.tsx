@@ -5,9 +5,10 @@ import ChatItem from "./ChatItem";
 interface ChatListProps {
   persons: Person[];
   setChatRoomID: (id: string) => void;
+  openAddPerson: () => void;
 }
 
-export default function ChatList({ persons, setChatRoomID }: ChatListProps) {
+export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatListProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPersons = persons.filter(person =>
@@ -21,7 +22,8 @@ export default function ChatList({ persons, setChatRoomID }: ChatListProps) {
         <div>
           Darwin Chat
         </div>
-        <div className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
+        <div onClick={openAddPerson}
+        className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
           Add
         </div>
       </div>

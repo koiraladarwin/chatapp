@@ -2,30 +2,49 @@ package handlers
 
 import (
 	"errors"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
+
 	"github.com/batmanboxer/chatapp/common"
 	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
+	"github.com/batmanboxer/chatapp/protomodels"
+	"google.golang.org/protobuf/proto"
 )
 
-//Handle Error Only Once Darwin. Dont be a Idiot
+// Handle Error Only Once Darwin. Dont be a Idiot
 func (handler *Handlers) SignUpHandler(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("Method Not Allowed"))
 		return nil
 	}
-
-	data := models.SignUpDto{}
-	err := utils.ReadJson(r, &data)
-
+	binary, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Wrong Format Request Body"))
 		return nil
 	}
+
+	data := protomodels.SignUpDto{}
+	err = proto.Unmarshal(binary, &data)
+
+	signUpState := models.SignUpDto{
+		Name:     data.Name,
+		Email:    data.Email,
+		Password: data.Password,
+		Age:      data.Age,
+	}
+
+	// err = utils.ReadJson(r, &data)
+	//
+	// if err != nil {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	w.Write([]byte("Wrong Format Request Body"))
+	// 	return nil
+	// }
 
 	err = ValidateName(&data.Name)
 	if err != nil {
@@ -40,8 +59,8 @@ func (handler *Handlers) SignUpHandler(w http.ResponseWriter, r *http.Request) e
 		w.Write([]byte("Email is Invalid"))
 		return nil
 	}
-     
-	err = handler.AuthManager.AuthSignUp(data)
+
+	err = handler.AuthManager.AuthSignUp(signUpState)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Unable to Sign Up"))
@@ -67,7 +86,7 @@ func ValidateEmail(email *string) error {
 	if email == nil || strings.TrimSpace(*email) == "" {
 		return errors.New("email cannot be empty")
 	}
-  //I dont understand this Regex
+	//I dont understand this Regex
 	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 
 	matched, err := regexp.MatchString(emailRegex, *email)

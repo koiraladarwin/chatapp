@@ -1,5 +1,6 @@
 
 import { useMutation } from '@tanstack/react-query';
+import { auth } from '../../../proto/auth';
 
 interface SignupResponse {
   status: string;
@@ -13,17 +14,25 @@ interface SignupInput {
 }
 
 const signupUser = async (data: SignupInput): Promise<SignupResponse> => {
-  //i hate javascript
+  //i hate javascript 
   data.Age = Number(data.Age)
-  let Body = JSON.stringify(data)
-  console.log(Body)
+  //why are we converting a number to number? Welcome to typescript land
+
+  const protoData = new auth.SignUpDto({
+    name: data.Name,
+    age: data.Age,
+    email: data.Email,
+    password: data.Password
+  })
+
+  const binary = protoData.serializeBinary();
 
   const response = await fetch('http://localhost:4000/signup', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/octet-stream',
     },
-    body: Body
+    body: binary
   });
 
 
