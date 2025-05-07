@@ -76,7 +76,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
       </div>
 
       {/* Messages List */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 max-h-[calc(100vh-150px)]">
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 max-h-[calc(100vh-150px)] break-all">
         {messages.map((message) => {
           console.log(message)
           return (<div
