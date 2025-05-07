@@ -10,6 +10,9 @@
 - **protoc** (Protocol Buffers compiler)
 - **protoc-gen-ts** (for TypeScript gRPC stubs)
 - **Make** (for running makefile targets)
+- **PostgreSQL** database
+- `.env` file in the root directory with the following variable:
+  - `POSTGRES_URL`: Your PostgreSQL connection string
 
 ### 🚀 Build & Run Guide
 
