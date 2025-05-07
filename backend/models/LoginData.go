@@ -13,8 +13,19 @@ type SignUpSuccess struct {
 	Status string `json:"status"`
 }
 
+type AccountModel struct {
+	ID        uuid.UUID `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	Verified  bool      `json:"verified"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+
 // model represents database
 // data represents request and respose
+
 type LoginDto struct{
   Email string
   Password string
@@ -27,16 +38,7 @@ type SignUpDto struct {
 	Password string
 }
 
-type AccountModel struct {
-	ID        uuid.UUID `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Verified  bool      `json:"verified"`
-	CreatedAt time.Time `json:"created_at"`
-}
-
-type ResponseAccountModel struct {
+type AccountModelDto struct {
 	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`

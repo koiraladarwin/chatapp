@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { auth } from '../../../proto/auth';
 
 export interface PersonData {
   name: string;
@@ -25,7 +26,16 @@ const getPersonData = async (name: string): Promise<PersonData[]> => {
     throw new Error('Failed to fetch chat rooms.');
   }
 
-  return response.json();
+  const buffer = await response.arrayBuffer();
+  const binary = new Uint8Array(buffer);
+  const listDto = auth.AccountListDto.deserializeBinary(binary)
+  const protoUsers = listDto.toObject().accounts
+  console.log(protoUsers)
+  return (protoUsers ?? []).map((u): PersonData => ({
+    id: u.id ?? "",
+    name: u.name ?? "",
+    created_at: u.created_at ?? "",
+  }));
 };
 
 const useDebouncedValue = (value: string, delay: number) => {

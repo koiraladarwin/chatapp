@@ -1,5 +1,4 @@
 syntax = "proto3";
-
 package auth;
 
 // Optional: Set Go package path for generated Go code
@@ -17,4 +16,17 @@ message SignUpDto {
   int32 age = 2;
   string email = 3;
   string password = 4;
+}
+
+// AccountModel DTO
+message AccountModelDto {
+  string id = 1; // UUID as string
+  string name = 2;
+  string email = 3;
+  bool verified = 4;
+  string created_at = 5;
+}
+
+message AccountListDto {
+  repeated AccountModelDto accounts = 1;
 }

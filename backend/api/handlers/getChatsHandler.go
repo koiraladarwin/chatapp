@@ -32,6 +32,7 @@ func (h *Handlers) GetChatsHandler(w http.ResponseWriter, r *http.Request) error
 	if err != nil   {
 		return err
 	}
+  
 
 	utils.WriteJson(w, chatRooms)
 

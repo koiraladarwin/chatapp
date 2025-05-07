@@ -9,7 +9,7 @@ interface AddPersonProps {
 const AddPerson: React.FC<AddPersonProps> = ({clicked,hide}:AddPersonProps) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-   // Use the custom hook to fetch the chat rooms based on the debounced search query
+  // Use the custom hook to fetch the chat rooms based on the debounced search query
   const { data: users = [], isLoading, isError } = useGetChatRooms(searchQuery);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
