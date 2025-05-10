@@ -2,13 +2,12 @@ package handlers
 
 import (
 	"errors"
-	"io"
 	"net/http"
 	"regexp"
 	"strings"
+	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/batmanboxer/chatapp/protomodels"
-	"google.golang.org/protobuf/proto"
 )
 
 // Handle Error Only Once Darwin. Dont be a Idiot
@@ -18,15 +17,11 @@ func (handler *Handlers) SignUpHandler(w http.ResponseWriter, r *http.Request) e
 		w.Write([]byte("Method Not Allowed"))
 		return nil
 	}
-	binary, err := io.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Wrong Format Request Body"))
-		return nil
-	}
+
 
 	data := protomodels.SignUpDto{}
-	err = proto.Unmarshal(binary, &data)
+
+  err:= utils.ReadProto(r,&data)
 
 	signUpState := models.SignUpDto{
 		Name:     data.Name,
@@ -86,6 +81,7 @@ func ValidateEmail(email *string) error {
 	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 
 	matched, err := regexp.MatchString(emailRegex, *email)
+
 	if err != nil {
 		return err
 	}

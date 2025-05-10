@@ -2,12 +2,11 @@ package handlers
 
 import (
 	"errors"
-	"io"
 	"net/http"
 	"github.com/batmanboxer/chatapp/common"
+	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/protomodels"
 	"github.com/google/uuid"
-	"google.golang.org/protobuf/proto"
 )
 
 func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) error {
@@ -25,17 +24,11 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 		return nil
 	}
 
-	binary, err := io.ReadAll(r.Body)
-
+	protoUserData := protomodels.AddChatRoomRequest{}
+	err = utils.ReadProto(r, &protoUserData)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return nil
-	}
-
-	protoUserData := protomodels.AddChatRoomRequest{}
-	err = proto.Unmarshal(binary, &protoUserData)
-	if err != nil {
-		return err
 	}
 
 	user2 := protoUserData.Participant

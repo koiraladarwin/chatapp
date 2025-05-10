@@ -1,11 +1,10 @@
 package handlers
 
 import (
-	"io"
 	"net/http"
+	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/batmanboxer/chatapp/protomodels"
-	"google.golang.org/protobuf/proto"
 )
 
 func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
@@ -16,10 +15,7 @@ func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	protodata := protomodels.LoginDto{}
-	bodyBytes, err := io.ReadAll(r.Body)
-	defer r.Body.Close()
-	err = proto.Unmarshal(bodyBytes, &protodata)
-
+	err := utils.ReadProto(r, &protodata)
 	if err != nil {
 		http.Error(w, "Unknown parameters", http.StatusMethodNotAllowed)
 		return nil
@@ -41,23 +37,10 @@ func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		Jwt: jwt,
 	}
 
-	binary, err := proto.Marshal(&protoSucess)
+  err = utils.WriteProto(w, &protoSucess)
 
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	}
-
-	//sucess := models.LoginSucess{
-	//	Jwt: jwt,
-	//}
-
-	//err = utils.WriteJson(w, sucess)
-
-	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Write(binary)
-
-	if err != nil {
-		return nil
 	}
 
 	return nil
