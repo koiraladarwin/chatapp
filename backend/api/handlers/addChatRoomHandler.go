@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"errors"
-	"github.com/batmanboxer/chatapp/common"
-	"github.com/batmanboxer/chatapp/internal/utils"
-	"github.com/batmanboxer/chatapp/models"
-	"github.com/google/uuid"
+	"io"
 	"net/http"
+	"github.com/batmanboxer/chatapp/common"
+	"github.com/batmanboxer/chatapp/protomodels"
+	"github.com/google/uuid"
+	"google.golang.org/protobuf/proto"
 )
 
 func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) error {
@@ -18,23 +19,36 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 		return errors.New("User Id Invalid")
 	}
 
-	user1, err := uuid.Parse(stringUserId)
+	user1Uuid, err := uuid.Parse(stringUserId)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return nil
+	}
+
+	binary, err := io.ReadAll(r.Body)
+
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return nil
+	}
+
+	protoUserData := protomodels.AddChatRoomRequest{}
+	err = proto.Unmarshal(binary, &protoUserData)
 	if err != nil {
 		return err
 	}
 
-	user2Data := models.AddChatRoomRequest{}
-	utils.ReadJson(r, &user2Data)
-	user2 := user2Data.Participant
+	user2 := protoUserData.Participant
+	user2Uuid, err := uuid.Parse(user2)
 
-	_, err = h.AuthManager.AuthGetUserById(user2.String())
+	_, err = h.AuthManager.AuthGetUserById(user2)
 
 	if err != nil {
 		http.Error(w, "User Doesnt Exists", http.StatusNotFound)
 		return nil
 	}
 
-	exists := h.ChatManager.CheckChatRoomExistsBtwnUsers(user1, user2)
+	exists := h.ChatManager.CheckChatRoomExistsBtwnUsers(user1Uuid, user2Uuid)
 
 	if exists {
 		http.Error(w, "User Doesnt Exists", http.StatusConflict)
@@ -43,8 +57,8 @@ func (h *Handlers) AddChatRoomHanlder(w http.ResponseWriter, r *http.Request) er
 
 	users := []uuid.UUID{}
 
-	users = append(users, user1)
-	users = append(users, user2)
+	users = append(users, user1Uuid)
+	users = append(users, user2Uuid)
 
 	err = h.ChatManager.AddChatRoom(users)
 

@@ -2,10 +2,7 @@ package handlers
 
 import (
 	"io"
-	"log"
 	"net/http"
-
-	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/batmanboxer/chatapp/protomodels"
 	"google.golang.org/protobuf/proto"
@@ -14,8 +11,7 @@ import (
 func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte("Method Not Allowed"))
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return nil
 	}
 
@@ -25,21 +21,11 @@ func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	err = proto.Unmarshal(bodyBytes, &protodata)
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Unknown Data Type Provided"))
+		http.Error(w, "Unknown parameters", http.StatusMethodNotAllowed)
 		return nil
 	}
-  log.Print("done this via protobuf")
-	// data := models.LoginDto{}
-	// err = json.NewDecoder(r.Body).Decode(&data)
-	//
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// 	w.Write([]byte("Unknown Data Type Provided"))
-	// 	return nil
-	// }
 
-	data := models.LoginDto{
+	data := models.LoginState{
 		Email:    protodata.Email,
 		Password: protodata.Password,
 	}
@@ -47,17 +33,28 @@ func (h *Handlers) LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	jwt, err := h.AuthManager.AuthLogin(data)
 
 	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(err.Error()))
+		http.Error(w, "Wrong Creadientials", http.StatusUnauthorized)
 		return nil
 	}
 
-	w.WriteHeader(http.StatusOK)
-	sucess := models.LoginSucess{
+	protoSucess := protomodels.LoginSucess{
 		Jwt: jwt,
 	}
 
-	err = utils.WriteJson(w, sucess)
+	binary, err := proto.Marshal(&protoSucess)
+
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	//sucess := models.LoginSucess{
+	//	Jwt: jwt,
+	//}
+
+	//err = utils.WriteJson(w, sucess)
+
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Write(binary)
 
 	if err != nil {
 		return nil

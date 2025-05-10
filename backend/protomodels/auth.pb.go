@@ -21,6 +21,51 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// LoginSucess
+type LoginSucess struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Jwt           string                 `protobuf:"bytes,1,opt,name=jwt,proto3" json:"jwt,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginSucess) Reset() {
+	*x = LoginSucess{}
+	mi := &file_auth_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginSucess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginSucess) ProtoMessage() {}
+
+func (x *LoginSucess) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginSucess.ProtoReflect.Descriptor instead.
+func (*LoginSucess) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *LoginSucess) GetJwt() string {
+	if x != nil {
+		return x.Jwt
+	}
+	return ""
+}
+
 // Login DTO
 type LoginDto struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -32,7 +77,7 @@ type LoginDto struct {
 
 func (x *LoginDto) Reset() {
 	*x = LoginDto{}
-	mi := &file_auth_proto_msgTypes[0]
+	mi := &file_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +89,7 @@ func (x *LoginDto) String() string {
 func (*LoginDto) ProtoMessage() {}
 
 func (x *LoginDto) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[0]
+	mi := &file_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +102,7 @@ func (x *LoginDto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginDto.ProtoReflect.Descriptor instead.
 func (*LoginDto) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{0}
+	return file_auth_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *LoginDto) GetEmail() string {
@@ -87,7 +132,7 @@ type SignUpDto struct {
 
 func (x *SignUpDto) Reset() {
 	*x = SignUpDto{}
-	mi := &file_auth_proto_msgTypes[1]
+	mi := &file_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -99,7 +144,7 @@ func (x *SignUpDto) String() string {
 func (*SignUpDto) ProtoMessage() {}
 
 func (x *SignUpDto) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[1]
+	mi := &file_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +157,7 @@ func (x *SignUpDto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignUpDto.ProtoReflect.Descriptor instead.
 func (*SignUpDto) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{1}
+	return file_auth_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SignUpDto) GetName() string {
@@ -157,7 +202,7 @@ type AccountModelDto struct {
 
 func (x *AccountModelDto) Reset() {
 	*x = AccountModelDto{}
-	mi := &file_auth_proto_msgTypes[2]
+	mi := &file_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -169,7 +214,7 @@ func (x *AccountModelDto) String() string {
 func (*AccountModelDto) ProtoMessage() {}
 
 func (x *AccountModelDto) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[2]
+	mi := &file_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -182,7 +227,7 @@ func (x *AccountModelDto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccountModelDto.ProtoReflect.Descriptor instead.
 func (*AccountModelDto) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{2}
+	return file_auth_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AccountModelDto) GetId() string {
@@ -229,7 +274,7 @@ type AccountListDto struct {
 
 func (x *AccountListDto) Reset() {
 	*x = AccountListDto{}
-	mi := &file_auth_proto_msgTypes[3]
+	mi := &file_auth_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -241,7 +286,7 @@ func (x *AccountListDto) String() string {
 func (*AccountListDto) ProtoMessage() {}
 
 func (x *AccountListDto) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[3]
+	mi := &file_auth_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -254,7 +299,7 @@ func (x *AccountListDto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccountListDto.ProtoReflect.Descriptor instead.
 func (*AccountListDto) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{3}
+	return file_auth_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AccountListDto) GetAccounts() []*AccountModelDto {
@@ -269,7 +314,9 @@ var File_auth_proto protoreflect.FileDescriptor
 const file_auth_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"auth.proto\x12\x04auth\"<\n" +
+	"auth.proto\x12\x04auth\"\x1f\n" +
+	"\vLoginSucess\x12\x10\n" +
+	"\x03jwt\x18\x01 \x01(\tR\x03jwt\"<\n" +
 	"\bLoginDto\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"c\n" +
@@ -300,15 +347,16 @@ func file_auth_proto_rawDescGZIP() []byte {
 	return file_auth_proto_rawDescData
 }
 
-var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_auth_proto_goTypes = []any{
-	(*LoginDto)(nil),        // 0: auth.LoginDto
-	(*SignUpDto)(nil),       // 1: auth.SignUpDto
-	(*AccountModelDto)(nil), // 2: auth.AccountModelDto
-	(*AccountListDto)(nil),  // 3: auth.AccountListDto
+	(*LoginSucess)(nil),     // 0: auth.LoginSucess
+	(*LoginDto)(nil),        // 1: auth.LoginDto
+	(*SignUpDto)(nil),       // 2: auth.SignUpDto
+	(*AccountModelDto)(nil), // 3: auth.AccountModelDto
+	(*AccountListDto)(nil),  // 4: auth.AccountListDto
 }
 var file_auth_proto_depIdxs = []int32{
-	2, // 0: auth.AccountListDto.accounts:type_name -> auth.AccountModelDto
+	3, // 0: auth.AccountListDto.accounts:type_name -> auth.AccountModelDto
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -327,7 +375,7 @@ func file_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_proto_rawDesc), len(file_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

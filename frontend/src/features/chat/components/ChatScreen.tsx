@@ -15,6 +15,7 @@ interface Message {
 }
 
 export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
+  const id = useGetId()
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const { isSuccess, data: chats = [] } = useGetChats(chatRoomId)
@@ -32,7 +33,6 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
     }
   }, [isSuccess]);
 
-  //this should be in protobuf . fix that darwin
   const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
       //messages.legth + 1 is just hacky and not good practise i guess
@@ -50,12 +50,11 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
     if (inputMessage.trim() === '') {
       return;
     }
-    console.log("reacher here")
     const message = new chat.ChatMessage({
       type: chat.MessageType.TEXT,
       content: inputMessage.trim(),
-      user_id: "idk",
-      timestamp: 123,
+      user_id: id,
+      timestamp: Date.now(),
     })
     sendSocketMessage(message);
 

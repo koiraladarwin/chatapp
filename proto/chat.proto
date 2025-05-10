@@ -15,3 +15,9 @@ message ChatMessage {
   string user_id = 3;
   int64 timestamp = 4;
 }
+
+message AddChatRoomRequest{
+    string participant = 1;
+}
+
+

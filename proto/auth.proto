@@ -4,6 +4,11 @@ package auth;
 // Optional: Set Go package path for generated Go code
 option go_package = "./protomodels;protomodels";
 
+//LoginSucess
+message LoginSucess {
+  string jwt = 1;
+}
+
 // Login DTO
 message LoginDto {
   string email = 1;
@@ -30,3 +35,5 @@ message AccountModelDto {
 message AccountListDto {
   repeated AccountModelDto accounts = 1;
 }
+
+

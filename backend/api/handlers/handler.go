@@ -18,7 +18,7 @@ type ChatService interface {
 }
 
 type AuthService interface {
-	AuthLogin(models.LoginDto) (string, error)
+	AuthLogin(models.LoginState) (string, error)
 	AuthSignUp(models.SignUpDto) error
 	AuthGetUserById(string) (models.AccountModel, error)
 }

@@ -145,4 +145,71 @@ export namespace chat {
             return ChatMessage.deserialize(bytes);
         }
     }
+    export class AddChatRoomRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            participant?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("participant" in data && data.participant != undefined) {
+                    this.participant = data.participant;
+                }
+            }
+        }
+        get participant() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set participant(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            participant?: string;
+        }): AddChatRoomRequest {
+            const message = new AddChatRoomRequest({});
+            if (data.participant != null) {
+                message.participant = data.participant;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                participant?: string;
+            } = {};
+            if (this.participant != null) {
+                data.participant = this.participant;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.participant.length)
+                writer.writeString(1, this.participant);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AddChatRoomRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AddChatRoomRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.participant = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): AddChatRoomRequest {
+            return AddChatRoomRequest.deserialize(bytes);
+        }
+    }
 }

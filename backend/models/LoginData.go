@@ -5,13 +5,6 @@ import (
 	"time"
 )
 
-type LoginSucess struct {
-	Jwt string `json:"jwt"`
-}
-
-type SignUpSuccess struct {
-	Status string `json:"status"`
-}
 
 type AccountModel struct {
 	ID        uuid.UUID `json:"id"`
@@ -26,7 +19,7 @@ type AccountModel struct {
 // model represents database
 // data represents request and respose
 
-type LoginDto struct{
+type LoginState struct{
   Email string
   Password string
 }

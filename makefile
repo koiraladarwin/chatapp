@@ -25,7 +25,7 @@ build-frontend:
 	@cd frontend && npm install
 dev-frontend:
 	echo "Starting frontend dev server..."
-	@cd frontend && npm run dev
+	@cd frontend && npm run dev -- --host
 # Run both frontend and backend (no building)
 run: 
 	echo "Running frontend and backend..."

@@ -6,9 +6,6 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-
-	"github.com/batmanboxer/chatapp/common"
-	"github.com/batmanboxer/chatapp/internal/utils"
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/batmanboxer/chatapp/protomodels"
 	"google.golang.org/protobuf/proto"
@@ -66,9 +63,8 @@ func (handler *Handlers) SignUpHandler(w http.ResponseWriter, r *http.Request) e
 		w.Write([]byte("Unable to Sign Up"))
 		return err
 	}
-
-	status := models.SignUpSuccess{Status: common.SUCCESS}
-	utils.WriteJson(w, status)
+  
+  w.WriteHeader(http.StatusOK)
 	return nil
 }
 
