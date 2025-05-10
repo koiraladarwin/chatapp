@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { resToUintArr } from '../../../utils/proto';
+import { chat } from '../../../proto/chat';
 
 export interface ChatRoomResponse {
   id: string;
   created_at: string;
   user_id: string;
-  name:string;
+  name: string;
 }
 
 const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
@@ -28,7 +30,12 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
     throw new Error('Failed to fetch chat rooms.');
   }
 
-  return response.json();
+  const binary = await resToUintArr(response);
+  const data = chat.ChatRoomList.deserializeBinary(binary)
+  const chatRoomState: ChatRoomResponse[] = data.rooms.map((room) => {
+    return { id: room.id.toString(), user_id: room.userId, name: room.name, created_at: "" }
+  })
+  return chatRoomState;
 };
 
 export const useGetChatRooms = () => {

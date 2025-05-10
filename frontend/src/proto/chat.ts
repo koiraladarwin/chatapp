@@ -212,4 +212,184 @@ export namespace chat {
             return AddChatRoomRequest.deserialize(bytes);
         }
     }
+    export class ChatRoom extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            id?: number;
+            userId?: string;
+            name?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("id" in data && data.id != undefined) {
+                    this.id = data.id;
+                }
+                if ("userId" in data && data.userId != undefined) {
+                    this.userId = data.userId;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+            }
+        }
+        get id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userId() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set userId(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            id?: number;
+            userId?: string;
+            name?: string;
+        }): ChatRoom {
+            const message = new ChatRoom({});
+            if (data.id != null) {
+                message.id = data.id;
+            }
+            if (data.userId != null) {
+                message.userId = data.userId;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                id?: number;
+                userId?: string;
+                name?: string;
+            } = {};
+            if (this.id != null) {
+                data.id = this.id;
+            }
+            if (this.userId != null) {
+                data.userId = this.userId;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.id != 0)
+                writer.writeInt64(1, this.id);
+            if (this.userId.length)
+                writer.writeString(2, this.userId);
+            if (this.name.length)
+                writer.writeString(3, this.name);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatRoom {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatRoom();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.id = reader.readInt64();
+                        break;
+                    case 2:
+                        message.userId = reader.readString();
+                        break;
+                    case 3:
+                        message.name = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatRoom {
+            return ChatRoom.deserialize(bytes);
+        }
+    }
+    export class ChatRoomList extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            rooms?: ChatRoom[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("rooms" in data && data.rooms != undefined) {
+                    this.rooms = data.rooms;
+                }
+            }
+        }
+        get rooms() {
+            return pb_1.Message.getRepeatedWrapperField(this, ChatRoom, 1) as ChatRoom[];
+        }
+        set rooms(value: ChatRoom[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            rooms?: ReturnType<typeof ChatRoom.prototype.toObject>[];
+        }): ChatRoomList {
+            const message = new ChatRoomList({});
+            if (data.rooms != null) {
+                message.rooms = data.rooms.map(item => ChatRoom.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                rooms?: ReturnType<typeof ChatRoom.prototype.toObject>[];
+            } = {};
+            if (this.rooms != null) {
+                data.rooms = this.rooms.map((item: ChatRoom) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.rooms.length)
+                writer.writeRepeatedMessage(1, this.rooms, (item: ChatRoom) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatRoomList {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatRoomList();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.rooms, () => pb_1.Message.addToRepeatedWrapperField(message, 1, ChatRoom.deserialize(reader), ChatRoom));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatRoomList {
+            return ChatRoomList.deserialize(bytes);
+        }
+    }
 }
