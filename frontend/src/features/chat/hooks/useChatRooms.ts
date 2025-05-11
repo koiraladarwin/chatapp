@@ -18,7 +18,7 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
   const response = await fetch('http://localhost:4000/getchatrooms', {
     headers: {
       Authorization: `${token}`,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/octet-stream',
     },
   });
 

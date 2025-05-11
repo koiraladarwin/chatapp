@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { resToUintArr } from '../../../utils/proto';
+import { chat } from '../../../proto/chat';
 
 export interface ChatsData {
   id: string;
@@ -10,7 +12,7 @@ export interface ChatsData {
 
 const getChatsData = async (chatRoom: string): Promise<ChatsData[]> => {
   const token = localStorage.getItem('jwt');
-  console.log("got upto here dude")
+
   if (!token) {
     throw new Error('No JWT token found');
   }
@@ -25,8 +27,11 @@ const getChatsData = async (chatRoom: string): Promise<ChatsData[]> => {
     }
     throw new Error('Failed to fetch chat rooms.');
   }
+  const buffer = await resToUintArr(response);
+  const data = chat.MessageModelList.deserializeBinary(buffer);
 
-  return response.json();
+  const chats: ChatsData[] = data.messages.map((chat) => { return {id:chat.id,sender_id:chat.SenderId,room_id:chat.RoomId,message:chat.text,created_at:chat.CreatedAt.toString()} })
+  return chats;
 };
 
 
