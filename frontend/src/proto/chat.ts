@@ -15,6 +15,7 @@ export namespace chat {
             type?: MessageType;
             content?: string;
             user_id?: string;
+            room_id?: string;
             timestamp?: number;
         }) {
             super();
@@ -28,6 +29,9 @@ export namespace chat {
                 }
                 if ("user_id" in data && data.user_id != undefined) {
                     this.user_id = data.user_id;
+                }
+                if ("room_id" in data && data.room_id != undefined) {
+                    this.room_id = data.room_id;
                 }
                 if ("timestamp" in data && data.timestamp != undefined) {
                     this.timestamp = data.timestamp;
@@ -52,16 +56,23 @@ export namespace chat {
         set user_id(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
+        get room_id() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set room_id(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
         get timestamp() {
-            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
         }
         set timestamp(value: number) {
-            pb_1.Message.setField(this, 4, value);
+            pb_1.Message.setField(this, 5, value);
         }
         static fromObject(data: {
             type?: MessageType;
             content?: string;
             user_id?: string;
+            room_id?: string;
             timestamp?: number;
         }): ChatMessage {
             const message = new ChatMessage({});
@@ -74,6 +85,9 @@ export namespace chat {
             if (data.user_id != null) {
                 message.user_id = data.user_id;
             }
+            if (data.room_id != null) {
+                message.room_id = data.room_id;
+            }
             if (data.timestamp != null) {
                 message.timestamp = data.timestamp;
             }
@@ -84,6 +98,7 @@ export namespace chat {
                 type?: MessageType;
                 content?: string;
                 user_id?: string;
+                room_id?: string;
                 timestamp?: number;
             } = {};
             if (this.type != null) {
@@ -94,6 +109,9 @@ export namespace chat {
             }
             if (this.user_id != null) {
                 data.user_id = this.user_id;
+            }
+            if (this.room_id != null) {
+                data.room_id = this.room_id;
             }
             if (this.timestamp != null) {
                 data.timestamp = this.timestamp;
@@ -110,8 +128,10 @@ export namespace chat {
                 writer.writeString(2, this.content);
             if (this.user_id.length)
                 writer.writeString(3, this.user_id);
+            if (this.room_id.length)
+                writer.writeString(4, this.room_id);
             if (this.timestamp != 0)
-                writer.writeInt64(4, this.timestamp);
+                writer.writeInt64(5, this.timestamp);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -131,6 +151,9 @@ export namespace chat {
                         message.user_id = reader.readString();
                         break;
                     case 4:
+                        message.room_id = reader.readString();
+                        break;
+                    case 5:
                         message.timestamp = reader.readInt64();
                         break;
                     default: reader.skipField();

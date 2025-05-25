@@ -198,3 +198,36 @@ func (pg *Postgres) RemoveUserFromRoom(roomID int, userID int) error {
 	_, err := pg.db.Exec(query, userID, roomID)
 	return err
 }
+
+func (pg *Postgres) GetUsersByChatRoomID(roomID string) ([]models.AccountModel, error) {
+	query := `
+		SELECT u.id, u.name, u.email, u.password, u.verified, u.created_at
+		FROM users u
+		JOIN (
+			SELECT jsonb_array_elements_text(user_ids) AS user_id
+			FROM chats_room
+			WHERE id = $1
+		) AS room_users ON u.id::text = room_users.user_id
+	`
+
+	rows, err := pg.db.Query(query, roomID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.AccountModel
+	for rows.Next() {
+		var user models.AccountModel
+		if err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Verified, &user.CreatedAt); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}

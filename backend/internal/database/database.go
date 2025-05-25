@@ -6,6 +6,7 @@ import (
 )
 
 type Storage interface {
+	GetUsersByChatRoomID(string) ([]models.AccountModel, error)
 	AddAccount(models.SignUpDto) error
 	GetUserByEmail(string) (models.AccountModel, error)
 	GetMessages(string, int, int) ([]models.MessageModel, error)

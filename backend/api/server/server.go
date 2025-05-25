@@ -35,7 +35,7 @@ func (api *Api) StartApi() {
 
 	ChatManager := chat.WebSocketManager{
 		ChatStorage: api.storage,
-		Clients: map[string][]*models.Client{},
+		Clients: map[string]*models.Client{},
 		Mutex:   sync.RWMutex{},
 	}
 

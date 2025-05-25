@@ -72,7 +72,8 @@ type ChatMessage struct {
 	Type          MessageType            `protobuf:"varint,1,opt,name=type,proto3,enum=chat.MessageType" json:"type,omitempty"`
 	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
 	UserId        string                 `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Timestamp     int64                  `protobuf:"varint,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	RoomId        string                 `protobuf:"bytes,4,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	Timestamp     int64                  `protobuf:"varint,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,6 +125,13 @@ func (x *ChatMessage) GetContent() string {
 func (x *ChatMessage) GetUserId() string {
 	if x != nil {
 		return x.UserId
+	}
+	return ""
+}
+
+func (x *ChatMessage) GetRoomId() string {
+	if x != nil {
+		return x.RoomId
 	}
 	return ""
 }
@@ -184,12 +192,13 @@ var File_chat_proto protoreflect.FileDescriptor
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12\x04chat\"\x85\x01\n" +
+	"chat.proto\x12\x04chat\"\x9e\x01\n" +
 	"\vChatMessage\x12%\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x11.chat.MessageTypeR\x04type\x12\x18\n" +
 	"\acontent\x18\x02 \x01(\tR\acontent\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\tR\x06userId\x12\x1c\n" +
-	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\"6\n" +
+	"\auser_id\x18\x03 \x01(\tR\x06userId\x12\x17\n" +
+	"\aroom_id\x18\x04 \x01(\tR\x06roomId\x12\x1c\n" +
+	"\ttimestamp\x18\x05 \x01(\x03R\ttimestamp\"6\n" +
 	"\x12AddChatRoomRequest\x12 \n" +
 	"\vparticipant\x18\x01 \x01(\tR\vparticipant*\"\n" +
 	"\vMessageType\x12\b\n" +

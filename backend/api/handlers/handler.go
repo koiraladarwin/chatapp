@@ -8,7 +8,7 @@ import (
 )
 
 type ChatService interface {
-	WebsocketAddClient(*websocket.Conn,string,string)
+	WebsocketAddClient(*websocket.Conn,string)
 	AddChatRoom([]uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ResponseChatRoom, error)
 	CheckChatRoomExistsBtwnUsers(uuid.UUID, uuid.UUID) bool

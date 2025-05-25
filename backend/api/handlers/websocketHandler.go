@@ -36,7 +36,7 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		http.Error(w, "User Account Is Deleted By Admin", http.StatusUnauthorized)
 		return nil
 	}
-
+  //we dont need the chat room id anymore
 	vars := mux.Vars(r)
 	chatroomId := vars["id"]
 
@@ -65,6 +65,6 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	h.ChatManager.WebsocketAddClient(conn, chatroomId, userId)
+	h.ChatManager.WebsocketAddClient(conn, userId)
 	return nil
 }
