@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { chat } from '../../../proto/chat'; // Adjust the import path
+import { chat } from '../../../proto/chat';
 
 export function useWebSocket(
   roomId: string,

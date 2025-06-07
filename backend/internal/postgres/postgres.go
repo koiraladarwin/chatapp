@@ -3,6 +3,9 @@ package postgress
 import (
 	"database/sql"
 	"encoding/json"
+	"log"
+	"strconv"
+
 	"github.com/batmanboxer/chatapp/models"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
@@ -123,7 +126,7 @@ func (postgres *Postgres) AddMessage(messageModel models.MessageModel) error {
 	return err
 }
 
-func (postgres *Postgres) GetMessages(chatRoomId string, offset int ,limit int) ([]models.MessageModel, error) {
+func (postgres *Postgres) GetMessages(chatRoomId string, offset int, limit int) ([]models.MessageModel, error) {
 	Messages := []models.MessageModel{}
 	query := `SELECT * FROM chats WHERE room_id = $1 ORDER BY created_at DESC  LIMIT $2 OFFSET $3`
 	rows, err := postgres.db.Query(query, chatRoomId, limit, offset)
@@ -199,35 +202,40 @@ func (pg *Postgres) RemoveUserFromRoom(roomID int, userID int) error {
 	return err
 }
 
-func (pg *Postgres) GetUsersByChatRoomID(roomID string) ([]models.AccountModel, error) {
+
+func (pg *Postgres) GetUserIDsByChatRoomID(roomID string) ([]string, error) {
+
+	intRoomID, err := strconv.Atoi(roomID)
+	if err != nil {
+		log.Printf("Invalid roomID %q: %v", roomID, err)
+		return nil, err
+	}
+
 	query := `
-		SELECT u.id, u.name, u.email, u.password, u.verified, u.created_at
-		FROM users u
-		JOIN (
-			SELECT jsonb_array_elements_text(user_ids) AS user_id
-			FROM chats_room
-			WHERE id = $1
-		) AS room_users ON u.id::text = room_users.user_id
+		SELECT jsonb_array_elements_text(user_ids) AS user_id
+		FROM public.chats_room
+		WHERE id = $1
 	`
 
-	rows, err := pg.db.Query(query, roomID)
+	rows, err := pg.db.Query(query,intRoomID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var users []models.AccountModel
+	var userIDs []string
 	for rows.Next() {
-		var user models.AccountModel
-		if err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Verified, &user.CreatedAt); err != nil {
+		var userID string
+		if err := rows.Scan(&userID); err != nil {
 			return nil, err
 		}
-		users = append(users, user)
+		userIDs = append(userIDs, userID)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return users, nil
+	return userIDs, nil
 }
+

@@ -6,7 +6,7 @@ import (
 )
 
 type ChatStorage interface {
-	GetUsersByChatRoomID(string) ([]models.AccountModel, error)
+	GetUserIDsByChatRoomID(string) ([]string, error)
 	GetMessages(string, int, int) ([]models.MessageModel, error)
 	AddMessage(models.MessageModel) error
 	CreateChatRoom([]uuid.UUID) error

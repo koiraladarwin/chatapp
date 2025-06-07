@@ -1,15 +1,9 @@
 package handlers
 
 import (
-	"errors"
-	"log"
-	"net/http"
-	"strconv"
-
 	auth "github.com/batmanboxer/chatapp/api/features/authentication"
-	"github.com/google/uuid"
-	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 var upgrader = websocket.Upgrader{
@@ -25,6 +19,7 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		http.Error(w, "JWT token is required", http.StatusUnauthorized)
 		return nil
 	}
+
 	userId, err := auth.ValidateJwt(token)
 	if err != nil {
 		http.Error(w, "Invalid JWT", http.StatusUnauthorized)
@@ -35,28 +30,6 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 	if err != nil {
 		http.Error(w, "User Account Is Deleted By Admin", http.StatusUnauthorized)
 		return nil
-	}
-  //we dont need the chat room id anymore
-	vars := mux.Vars(r)
-	chatroomId := vars["id"]
-
-	userUuid, err := uuid.Parse(userId)
-	if err != nil {
-		return errors.New("User Id Invalid")
-	}
-
-	roomId, err := strconv.Atoi(chatroomId)
-
-	if err != nil {
-		log.Println("Invalid Room id")
-		log.Println(err)
-		return errors.New("Invalid Room Id")
-	}
-
-	exists := h.ChatManager.CheckChatRoomExists(userUuid, roomId)
-
-	if !exists {
-		return errors.New("Wrong ChatRoom Id Number")
 	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)

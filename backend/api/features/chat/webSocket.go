@@ -1,8 +1,6 @@
 package chat
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -28,7 +26,6 @@ var upgrader = websocket.Upgrader{
 }
 
 func (h *WebSocketManager) WebsocketAddClient(conn *websocket.Conn, stringUserId string) {
-
 	client := &models.Client{
 		Id:        stringUserId,
 		Conn:      conn,
@@ -36,10 +33,7 @@ func (h *WebSocketManager) WebsocketAddClient(conn *websocket.Conn, stringUserId
 		Closech:   make(chan struct{}),
 	}
 
-	h.Mutex.Lock()
 	h.addClient(client)
-	h.Mutex.Unlock()
-
 	<-client.Closech
 	conn.Close()
 	h.removeClient(client)
@@ -88,6 +82,8 @@ func (h *WebSocketManager) listenMessage(client *models.Client) {
 		if err != nil {
 			return
 		}
+    
+    //validate if rooom id is valid and that user is in thier
 
 		message := models.MessageModel{
 			RoomId:   protoMessage.RoomId,
@@ -101,12 +97,13 @@ func (h *WebSocketManager) listenMessage(client *models.Client) {
 			return
 		}
 
-		h.broadcastMessage(protoMessage.RoomId, protoMessage.Content, client)
+		h.broadcastMessage(message.RoomId,message.Text, client)
 	}
 }
 
-func (h *WebSocketManager) broadcastMessage(roomId string, text string, client *models.Client) {
-	clients, err := h.ChatStorage.GetUsersByChatRoomID(roomId)
+
+func (h *WebSocketManager) broadcastMessage(roomId string, text string, senderClient *models.Client) {
+	clients, err := h.ChatStorage.GetUserIDsByChatRoomID(roomId)
 	if err != nil {
 		return
 	}
@@ -114,19 +111,19 @@ func (h *WebSocketManager) broadcastMessage(roomId string, text string, client *
 	message := models.MessageModel{
 		RoomId:   roomId,
 		Text:     text,
-		SenderId: client.Id,
+		SenderId: senderClient.Id,
 	}
 
-	for _, client := range clients {
-		clientMsgChan := h.Clients[client.ID.String()].Messagech
-		if clientMsgChan != nil {
-			clientMsgChan <- message
+	for _, userID := range clients {
+		c, ok := h.Clients[userID]
+		if !ok {
+			continue
 		}
-
+		if c.Messagech != nil {
+			c.Messagech <- message
+		}
 	}
-
 }
-
 func (h *WebSocketManager) deliverMessage(client *models.Client) {
 
 	for message := range client.Messagech {
