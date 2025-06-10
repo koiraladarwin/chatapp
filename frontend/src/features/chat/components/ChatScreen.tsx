@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useWebSocket } from "../hooks/useWebSocket";
+import { useChats } from "../hooks/useWebSocket";
 import { chat } from "../../../proto/chat";
 import { useGetChats } from "../hooks/useGetChats";
-import useGetId from "../../common/hook/useGetId";
+import useJwt from "../../common/hook/useGetId";
 
 interface MainChatScreenProps {
   chatRoomId: string;
@@ -15,11 +15,11 @@ interface Message {
 }
 
 export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
-  const id = useGetId()
+  const id = useJwt()
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const { isSuccess, data: chats = [] } = useGetChats(chatRoomId)
-  const userId = useGetId();
+  const userId = useJwt();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
   }, []);
 
 
-  const { sendMessage: sendSocketMessage } = useWebSocket(chatRoomId, handleIncomingMessage);
+  const { sendMessage: sendSocketMessage } = useChats(chatRoomId, handleIncomingMessage);
 
   const sendMessage = () => {
     if (inputMessage.trim() === '') {

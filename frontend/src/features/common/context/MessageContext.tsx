@@ -5,9 +5,11 @@ import React, {
   useRef,
   ReactNode,
   useState,
+  cache,
 } from 'react';
 
 import { chat } from '../../../proto/chat';
+import useJwt from '../hook/useGetId';
 
 interface WebSocketContextType {
   isConnected: boolean;
@@ -26,11 +28,20 @@ export const useWebSocket = (): WebSocketContextType => {
 };
 
 interface WebSocketProviderProps {
-  url: string;
   children: ReactNode;
 }
 
-export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ url, children }) => {
+export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
+  let jwt: String = ""
+
+  try {
+    jwt = useJwt()
+  } catch (e) {
+    //go to login
+  }
+
+  const url = "http://localhost:4000/listen?jwt="+jwt
+
   const socket = useRef<WebSocket | null>(null);
   const messageHandler = useRef<(msg: any) => void>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -48,7 +59,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ url, child
         const data = new Uint8Array(event.data);
         const message = chat.ChatMessage.deserializeBinary(data);
         if (messageHandler.current) {
-        
+
           messageHandler.current(message);
         }
       } catch (e) {
