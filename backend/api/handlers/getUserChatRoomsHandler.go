@@ -23,14 +23,14 @@ func (h *Handlers) GetUserChatRoomsHanlder(w http.ResponseWriter, r *http.Reques
 		return err
 	}
 
-	chatRooms, err := h.ChatManager.GetChatRoomsByUser(uuidUserId)
+	rooms, err := h.ChatManager.GetChatRoomsByUser(uuidUserId)
 	if err != nil {
 		log.Println("here is error")
 		log.Println(err.Error())
 		return err
 	}
 
-	utils.WriteJson(w, chatRooms)
+	utils.WriteJson(w, rooms)
 
 	return nil
 }

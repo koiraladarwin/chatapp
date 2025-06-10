@@ -1,9 +1,10 @@
 package handlers
 
 import (
+	"log"
+	"net/http"
 	auth "github.com/batmanboxer/chatapp/api/features/authentication"
 	"github.com/gorilla/websocket"
-	"net/http"
 )
 
 var upgrader = websocket.Upgrader{
@@ -20,13 +21,16 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 		return nil
 	}
 
-	userId, err := auth.ValidateJwt(token)
+	userID, err := auth.ValidateJwt(token)
+  log.Print("jwt userId")
+  log.Println(userID)
+
 	if err != nil {
 		http.Error(w, "Invalid JWT", http.StatusUnauthorized)
 		return nil
 	}
 
-	_, err = h.AuthManager.AuthGetUserById(userId)
+  user, err := h.AuthManager.AuthGetUserById(userID)
 	if err != nil {
 		http.Error(w, "User Account Is Deleted By Admin", http.StatusUnauthorized)
 		return nil
@@ -37,7 +41,8 @@ func (h *Handlers) WebsocketHandler(w http.ResponseWriter, r *http.Request) erro
 	if err != nil {
 		return err
 	}
-
-	h.ChatManager.WebsocketAddClient(conn, userId)
+  log.Print("userid from handler: ")
+  log.Println(user.ID)
+	h.ChatManager.WebsocketAddClient(conn, user.ID.String())
 	return nil
 }

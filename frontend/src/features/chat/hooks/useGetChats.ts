@@ -27,10 +27,24 @@ const getChatsData = async (chatRoom: string): Promise<ChatsData[]> => {
     }
     throw new Error('Failed to fetch chat rooms.');
   }
-  const buffer = await resToUintArr(response);
-  const data = chat.MessageModelList.deserializeBinary(buffer);
 
-  const chats: ChatsData[] = data.messages.map((chat) => { return {id:chat.id,sender_id:chat.SenderId,room_id:chat.RoomId,message:chat.text,created_at:chat.CreatedAt.toString()} })
+  //fix this darwin
+  // const buffer = await resToUintArr(response);
+  //const data = chat.MessageModelList.deserializeBinary(buffer);
+
+  const data = await response.json();
+  console.log(data)
+  let chats: ChatsData[] = [];
+    chats = data.map((chat: ChatsData) => {
+      return {
+        id: chat.id,
+        sender_id: chat.sender_id,
+        room_id: chat.room_id,
+        message: chat.message,
+        created_at: ""
+      }
+    })
+  console.log("here");
   return chats;
 };
 

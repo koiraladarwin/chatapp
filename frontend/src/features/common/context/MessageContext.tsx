@@ -32,16 +32,8 @@ interface WebSocketProviderProps {
 }
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
-  let jwt: String = ""
-
-  try {
-    jwt = useJwt()
-  } catch (e) {
-    //go to login
-  }
-
-  const url = "http://localhost:4000/listen?jwt="+jwt
-
+  const jwt = localStorage.getItem('jwt');
+  const url = "http://localhost:4000/listen?token=" + jwt
   const socket = useRef<WebSocket | null>(null);
   const messageHandler = useRef<(msg: any) => void>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -54,12 +46,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       console.log('WebSocket connected');
     };
 
-    socket.current.onmessage = (event) => {
+    socket.current.onmessage = async (event) => {
       try {
-        const data = new Uint8Array(event.data);
-        const message = chat.ChatMessage.deserializeBinary(data);
-        if (messageHandler.current) {
-
+        const resBinary = await event.data.arrayBuffer();
+        const data = new Uint8Array(resBinary);
+        const message = chat.ChatMessage.deserializeBinary(data); if (messageHandler.current) {
           messageHandler.current(message);
         }
       } catch (e) {

@@ -23,6 +23,9 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    console.log("this is chats from ui")
+    console.log(chats)
+    console.log("this is also chats from ui")
     if (isSuccess && chats.length > 0) {
       const storedMessages: Message[] = chats.map((chat) => ({
         id: parseInt(chat.id),
@@ -31,12 +34,12 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
       }));
       setMessages(storedMessages.reverse());
     }
-  }, [isSuccess]);
+  }, [chats]);
 
   const handleIncomingMessage = useCallback((message: chat.ChatMessage) => {
     const newMessage: Message = {
       //messages.legth + 1 is just hacky and not good practise i guess
-      id: messages.length+1,
+      id: messages.length + 1,
       text: message.content,
       isUser: message.user_id == userId
     };
@@ -44,7 +47,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
   }, []);
 
 
-  const { sendMessage: sendSocketMessage } = useChats(chatRoomId, handleIncomingMessage);
+  const { sendMessageToContext } = useChats(chatRoomId, handleIncomingMessage);
 
   const sendMessage = () => {
     if (inputMessage.trim() === '') {
@@ -54,10 +57,10 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
       type: chat.MessageType.TEXT,
       content: inputMessage.trim(),
       user_id: id,
+      room_id:chatRoomId,
       timestamp: Date.now(),
     })
-    sendSocketMessage(message);
-
+    sendMessageToContext(message);
     setInputMessage("")
   };
 

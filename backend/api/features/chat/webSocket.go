@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -66,8 +67,10 @@ func (h *WebSocketManager) removeClient(client *models.Client) {
 
 func (h *WebSocketManager) listenMessage(client *models.Client) {
 	for {
+		log.Print("got a message")
 		messageType, p, err := client.Conn.ReadMessage()
 		if err != nil {
+			log.Print(err)
 			client.Closech <- struct{}{}
 			break
 		}
@@ -82,25 +85,23 @@ func (h *WebSocketManager) listenMessage(client *models.Client) {
 		if err != nil {
 			return
 		}
-    
-    //validate if rooom id is valid and that user is in thier
+
+		//validate if rooom id is valid and that user is in thier
 
 		message := models.MessageModel{
 			RoomId:   protoMessage.RoomId,
 			Text:     protoMessage.Content,
 			SenderId: client.Id,
 		}
-
+    
 		err = h.ChatStorage.AddMessage(message)
-
 		if err != nil {
 			return
 		}
 
-		h.broadcastMessage(message.RoomId,message.Text, client)
+		h.broadcastMessage(message.RoomId, message.Text, client)
 	}
 }
-
 
 func (h *WebSocketManager) broadcastMessage(roomId string, text string, senderClient *models.Client) {
 	clients, err := h.ChatStorage.GetUserIDsByChatRoomID(roomId)
@@ -117,6 +118,7 @@ func (h *WebSocketManager) broadcastMessage(roomId string, text string, senderCl
 	for _, userID := range clients {
 		c, ok := h.Clients[userID]
 		if !ok {
+			log.Print("not ok")
 			continue
 		}
 		if c.Messagech != nil {
@@ -134,13 +136,12 @@ func (h *WebSocketManager) deliverMessage(client *models.Client) {
 			UserId:    message.SenderId,
 			Timestamp: message.CreatedAt.Unix(),
 		}
-
 		sendMessage, err := proto.Marshal(sendMessageSchema)
 
 		if err != nil {
 			continue
 		}
-
+    log.Print(sendMessage)
 		err = client.Conn.WriteMessage(websocket.BinaryMessage, []byte(sendMessage))
 		if err != nil {
 			client.Closech <- struct{}{}

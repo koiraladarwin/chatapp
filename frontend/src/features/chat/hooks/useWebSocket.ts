@@ -13,9 +13,11 @@ export function useChats(
   //  throw new Error('No JWT token found');
   //}
 
-  const socketRef = useRef<WebSocket | null>(null);
+  //const socketRef = useRef<WebSocket | null>(null);
   setOnMessage((chat)=>{
+    if(chat.room_id==roomId){
     onMessage(chat) 
+    }
   })
 
   //useEffect(() => {
