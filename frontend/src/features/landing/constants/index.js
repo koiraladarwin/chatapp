@@ -37,6 +37,7 @@ import {
 } from "../assets";
 import { links } from "../config";
 
+
 export const navigation = [
   {
     id: "0",
@@ -73,13 +74,13 @@ export const notificationImages = [notification4, notification3, notification2];
 
 export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
 
-export const brainwaveServices = [
-  "Photo generating",
-  "Photo enhance",
-  "Seamless Integration",
+export const DarwinwebServices = [
+  "Anonymous Messaging",
+  "Voice to Text & Text to Voice",
+  "AI Image Generation",
 ];
 
-export const brainwaveServicesIcons = [
+export const DarwinwebServiceIcons = [
   recording03,
   recording01,
   disc02,
@@ -90,41 +91,41 @@ export const brainwaveServicesIcons = [
 export const roadmap = [
   {
     id: "0",
-    title: "Voice recognition",
-    text: "Enable the chatbot to understand and respond to voice commands, making it easier for users to interact with the app hands-free.",
-    date: "May 2023",
+    title: "Anonymous Chat",
+    text: "Implement fully anonymous and secure messaging with no personal data retention for user privacy.",
+    date: "July 2025",
     status: "done",
     imageUrl: roadmap1,
     colorful: true,
   },
   {
     id: "1",
-    title: "Gamification",
-    text: "Add game-like elements, such as badges or leaderboards, to incentivize users to engage with the chatbot more frequently.",
-    date: "May 2023",
+    title: "Voice Recognition & TTS",
+    text: "Enable voice-to-text and text-to-voice features to make chatting effortless and hands-free.",
+    date: "August 2025",
     status: "progress",
     imageUrl: roadmap2,
   },
   {
     id: "2",
-    title: "Chatbot customization",
-    text: "Allow users to customize the chatbot's appearance and behavior, making it more engaging and fun to interact with.",
-    date: "May 2023",
-    status: "done",
+    title: "AI Image Generation",
+    text: "Add AI-powered image generation directly in chat to enhance conversations with visuals.",
+    date: "September 2025",
+    status: "planned",
     imageUrl: roadmap3,
   },
   {
     id: "3",
-    title: "Integration with APIs",
-    text: "Allow the chatbot to access external data sources, such as weather APIs or news APIs, to provide more relevant recommendations.",
-    date: "May 2023",
-    status: "progress",
+    title: "Protobuf-based Performance",
+    text: "Use Protobuf serialization to speed up message delivery and reduce data usage.",
+    date: "October 2025",
+    status: "planned",
     imageUrl: roadmap4,
   },
 ];
 
 export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+  "DarwinWeb combines advanced AI features with top-notch privacy and lightning-fast protobuf messaging.";
 
 export const collabContent = [
   {
@@ -134,11 +135,11 @@ export const collabContent = [
   },
   {
     id: "1",
-    title: "Smart Automation",
+    title: "Smart AI Assistance",
   },
   {
     id: "2",
-    title: "Top-notch Security",
+    title: "End-to-End Encryption",
   },
 ];
 
@@ -205,54 +206,57 @@ export const pricing = [
   {
     id: "0",
     title: "Basic",
-    description: "AI chatbot, personalized recommendations",
+    description: "Anonymous chat with AI assistance and limited voice/image features.",
     price: "0",
     features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
+      "Secure anonymous messaging",
+      "Basic AI chatbot support",
+      "Voice to text and text to voice functionality",
+      "Limited AI image generation",
     ],
     premium: false,
   },
   {
     id: "1",
     title: "Premium",
-    description: "Advanced AI chatbot, priority support, analytics dashboard",
+    description: "Full AI capabilities, unlimited voice/image, and priority support.",
     price: "9.99",
     features: [
-      "An advanced AI chatbot that can understand complex queries",
-      "An analytics dashboard to track your conversations",
-      "Priority support to solve issues quickly",
+      "Unlimited AI chatbot conversations",
+      "Full voice-to-text and text-to-voice access",
+      "Unlimited AI image generation",
+      "Priority customer support",
     ],
     premium: true,
   },
   {
     id: "2",
     title: "Enterprise",
-    description: "Custom AI chatbot, advanced analytics, dedicated account",
-    price: null,
+    description: "Custom AI solutions and dedicated support for your organization.",
+    price: "19.99",
     features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
+      "Tailored AI chatbots",
+      "Advanced analytics & security",
+      "Dedicated account management",
+      "Full voice-to-text and text-to-voice unlimited",
     ],
-    premium: false,
+    premium: true,
   },
 ];
 
 export const benefits = [
   {
     id: "0",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Ask Anything",
+    text: "Get fast answers with AI chat that understands your questions.",
     backgroundUrl: "/src/assets/benefits/card-1.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
   {
     id: "1",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
+    title: "Improve Everyday",
+    text: "AI learns and adapts to provide better responses over time.",
     backgroundUrl: "/src/assets/benefits/card-2.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
@@ -260,16 +264,16 @@ export const benefits = [
   },
   {
     id: "2",
-    title: "Connect everywhere",
-    text: "Connect with the AI chatbot from anywhere, on any device, making it more accessible and convenient.",
+    title: "Connect Everywhere",
+    text: "Use DarwinWeb across all your devices with seamless sync.",
     backgroundUrl: "/src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     id: "3",
-    title: "Fast responding",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Fast Responding",
+    text: "Protobuf-powered messaging delivers responses instantly.",
     backgroundUrl: "/src/assets/benefits/card-4.svg",
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
@@ -277,16 +281,16 @@ export const benefits = [
   },
   {
     id: "4",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Safe & Private",
+    text: "Your privacy matters — no personal data is stored or shared.",
     backgroundUrl: "/src/assets/benefits/card-5.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
   {
     id: "5",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
+    title: "Voice & Image AI",
+    text: "Chat with voice commands and generate AI images effortlessly.",
     backgroundUrl: "/src/assets/benefits/card-6.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
@@ -325,3 +329,4 @@ export const socials = [
     url: "#",
   },
 ];
+

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { service1, service2, service3, check } from "../assets";
-import { brainwaveServices, brainwaveServicesIcons } from "../constants";
+import { DarwinwebServices, DarwinwebServiceIcons } from "../constants";
 import Generating from "./Generating";
 import Heading from "./Heading";
 import Section from "./Section";
@@ -21,9 +21,9 @@ const Services = () => {
         <Heading
           title={
             <>
-              Generative AI made for{" "}
+              Anynomous Chating Made For {" "}
               <span className="inline-block relative font-semibold">
-                creators
+                Users
                 <img
                   src={curve}
                   className="absolute top-full left-0 w-full xl:-mt-2 pointer-events-none select-none"
@@ -34,7 +34,7 @@ const Services = () => {
               </span>
             </>
           }
-          text="Brainwave unlocks the potential of AI-powered applications."
+          text="Darwin unlocks the potential of faster and anonymous applications."
         />
 
         <div className="relative">
@@ -51,12 +51,12 @@ const Services = () => {
             </div>
 
             <div className="relative z-1 max-w-[17rem] ml-auto">
-              <h4 className="h4 mb-4">Smartest AI</h4>
+              <h4 className="h4 mb-4">Fastest Message</h4>
               <p className="body-2 mb-[3rem] text-n-3">
-                Brainwave unlocks the potential of AI-powered applications.
+                Darwin unlocks the potential of faster and anonymous applications.
               </p>
               <ul className="body-2">
-                {brainwaveServices.map((item, i) => (
+                {DarwinwebServices.map((item, i) => (
                   <li
                     key={i}
                     className="flex items-start py-4 border-t border-n-6"
@@ -93,7 +93,7 @@ const Services = () => {
               <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-b from-n-8/0 to-n-8/90 lg:p-15">
                 <h4 className="h4 mb-4">Photo editing</h4>
                 <p className="body-2 mb-[3rem] text-n-3">
-                  Automatically enhance your photos using our AI app&apos;s
+                  Automatically enhance your photos using our AI apps
                   photo editing feature. Try it now!
                 </p>
               </div>
@@ -110,7 +110,7 @@ const Services = () => {
                 </p>
 
                 <ul className="flex items-center justify-between">
-                  {brainwaveServicesIcons.map((icon, i) => (
+                  {DarwinwebServiceIcons.map((icon, i) => (
                     <li
                       key={i}
                       className={`flex items-center justify-center rounded-2xl ${

@@ -31,10 +31,10 @@ const Hero = () => {
               options={{
                 strings: [
                   "AI Chatting",
-                  "Photo Editing",
-                  "Video Generation",
+                  "Anonymous Chats",
                   "Image Generation",
                   "Code Generation",
+                  "Faster Chatting",
                 ],
                 autoStart: true,
                 loop: true,
@@ -42,11 +42,12 @@ const Hero = () => {
             />
           </h1>
 
+
           <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
-            Unleast the power of AI within Brainwave. Upgrade your productivity
-            with{" "}
+            Experience the power of AI with DarwinWeb. Elevate your anonymous
+            conversations and connect effortlessly using{" "}
             <span className="inline-block relative font-semibold">
-              Brainwave
+              DarwinWeb
               <img
                 src={curve}
                 className="absolute top-full left-0 w-full xl:-mt-2 pointer-events-none select-none"
@@ -55,10 +56,10 @@ const Hero = () => {
                 alt="Curve"
               />
             </span>
-            , the open AI chat app.
+            , the secure and private AI chat app.
           </p>
 
-          <Button href="#pricing" white>
+          <Button href="/login" white>
             Get started
           </Button>
         </div>
@@ -92,7 +93,7 @@ const Hero = () => {
                 <ScrollParallax isAbsolutelyPositioned>
                   <Notification
                     className="hidden absolute -right-[5.5rem] bottom-[11rem] w-[18rem] xl:flex"
-                    title="Code generation"
+                    title="Anymous Chat"
                   />
                 </ScrollParallax>
               </div>

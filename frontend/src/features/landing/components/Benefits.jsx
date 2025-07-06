@@ -16,7 +16,7 @@ const Benefits = () => {
             <>
               Chat Smarter, Not Harder with{" "}
               <span className="inline-block relative font-semibold">
-                Brainwave
+                DarwinWeb
                 <img
                   src={curve}
                   className="absolute top-full left-0 w-full xl:-mt-2 pointer-events-none select-none"

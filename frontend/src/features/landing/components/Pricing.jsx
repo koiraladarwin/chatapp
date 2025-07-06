@@ -29,7 +29,7 @@ const Pricing = () => {
         </div>
 
         <Heading
-          tag="Get started with Brainwave"
+          tag="Get started with Darwinweb"
           title="Pay once, use forever"
         />
 
