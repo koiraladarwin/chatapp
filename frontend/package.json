@@ -10,16 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.4",
+    "framer-motion": "^12.19.2",
     "@tanstack/react-query": "^5.74.7",
-    "autoprefixer": "^10.4.21",
     "google-protobuf": "^3.21.4",
-    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.1",
     "react-router-dom": "^7.5.2",
-    "tailwindcss": "^4.1.4"
+    "scroll-lock": "^2.1.5",
+    "typewriter-effect": "^2.22.0",
+    "react-just-parallax": "^3.1.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -34,6 +34,9 @@
     "protoc-gen-ts": "^0.8.7",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "vite": "^6.3.1"
   }
 }
