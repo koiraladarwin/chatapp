@@ -16,9 +16,9 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
   );
 
   return (
-    <div className="flex-4/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen">
+    <div className="w-3/12 max-md:w-2/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen">
 
-      <div className="p-4 text-white text-3xl font-bold flex justify-between items-center">
+      <div className="p-4 text-white text-3xl max-md:text-lg font-bold flex justify-between items-center max-md:flex-col max-md:gap-2">
         <div>
           Darwin Chat
         </div>
@@ -29,7 +29,7 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
       </div>
 
       {/* Search Bar */}
-      <div className="mb-4">
+      <div className="mb-4 max-md:hidden">
         <input
           type="text"
           placeholder="Search or start new chat"
@@ -45,7 +45,7 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
           <div
             key={person.id}
             onClick={() => setChatRoomID(person.id.toString())}
-            className="hover:bg-gray-700 cursor-pointer p-2 rounded-lg"
+            className="bg-gray-700 hover:bg-gray-700 cursor-pointer p-2 rounded-lg"
           >
             <ChatItem name={person.name} lastMessage={person.lastMessage} />
 

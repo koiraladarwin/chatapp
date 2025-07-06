@@ -71,7 +71,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
   }, [messages]);
 
   return (
-    <div className="flex-10/12 flex flex-col bg-gray-900 max-h-screen">
+    <div className="w-9/12 max-md:w-10/12 flex flex-col bg-gray-900 max-h-screen">
       {/* Header */}
       <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
         Chatting with: {chatRoomId}

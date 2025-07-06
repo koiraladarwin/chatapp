@@ -67,7 +67,7 @@ export default function Chat() {
 
 
   return (
-    <div className="flex relative">
+    <div className="flex relative w-full">
       {/*Add Person */}
 
       {addPersonScreen &&
@@ -86,6 +86,7 @@ export default function Chat() {
       <div className="border-l border-gray-500 h-screen"></div>
 
       {/* Main Chat Screen */}
+      
       <ChatScreen chatRoomId={chatRoomId} />
     </div>
   );
