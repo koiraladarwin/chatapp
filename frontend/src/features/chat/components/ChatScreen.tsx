@@ -71,7 +71,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
   }, [messages]);
 
   return (
-    <div className="w-9/12 max-md:w-10/12 flex flex-col bg-gray-900 max-h-screen">
+    <div className="w-9/12 max-md:w-10/12 flex flex-col bg-gray-900 max-h-screen overflow-clip">
       {/* Header */}
       <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
         Chatting with: {chatRoomId}
@@ -96,13 +96,13 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
       </div>
 
       {/* Message Input */}
-      <div className="p-4 flex gap-2">
+      <div className="w-full p-4 flex gap-2">
         <input
           type="text"
           placeholder="Type your message..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          className="flex-1 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className="flex-1 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 w-7/12"
           onKeyDown={(e) => {
             if (e.key === 'Enter') sendMessage();
           }}

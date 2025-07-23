@@ -8,7 +8,7 @@ interface ChatListProps {
   openAddPerson: () => void;
 }
 
-export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatListProps) {
+export default function ChatList({ persons, setChatRoomID, openAddPerson }: ChatListProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPersons = persons.filter(person =>
@@ -16,14 +16,14 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
   );
 
   return (
-    <div className="w-3/12 max-md:w-2/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen">
+    <div className="w-3/12 max-md:w-2/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen overflow-clip">
 
-      <div className="p-4 text-white text-3xl max-md:text-lg font-bold flex justify-between items-center max-md:flex-col max-md:gap-2">
+      <div className="p-4 max-sm:hidden text-white text-3xl max-md:text-lg font-bold flex justify-between items-center max-md:flex-col max-md:gap-2 ">
         <div>
           Darwin Chat
         </div>
         <div onClick={openAddPerson}
-        className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
+          className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
           Add
         </div>
       </div>
@@ -40,14 +40,21 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
       </div>
 
       {/* Persons List */}
-      <div className="flex flex-col gap-1 overflow-y-auto pr-2" style={{ height: 'calc(100vh - 10px)' }}>
+      <div className="flex flex-col gap-1 overflow-y-auto pr-2 items-center" style={{ height: 'calc(100vh - 10px)' }}>
         {filteredPersons.map((person) => (
           <div
             key={person.id}
             onClick={() => setChatRoomID(person.id.toString())}
-            className="bg-gray-700 hover:bg-gray-700 cursor-pointer p-2 rounded-lg"
+            className="bg-gray-700 hover:bg-gray-700 cursor-pointer p-2 w-full rounded-lg max-md:w-fit "
           >
-            <ChatItem name={person.name} lastMessage={person.lastMessage} />
+            <div className="max-md:hidden">
+              <ChatItem name={person.name} lastMessage={person.lastMessage} />
+            </div>
+
+            <div className="md:hidden">
+              < SingleCircularList name={person.name}/>
+            </div>
+
 
           </div>
         ))}
@@ -55,4 +62,19 @@ export default function ChatList({ persons, setChatRoomID,openAddPerson }: ChatL
     </div>
   );
 }
+interface singleCircularListProps {
+  name: string;
+}
+
+function SingleCircularList({ name }: singleCircularListProps) {
+  return (
+    <div className="text-white text-3xl rounded-full">{name.substring(0, 1).toUpperCase()}</div>
+  );
+}
+
+
+
+
+
+
 
