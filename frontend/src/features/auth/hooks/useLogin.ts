@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { auth } from '../../../proto/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginResponse {
   jwt: string;
@@ -11,25 +12,25 @@ interface LoginInput {
 }
 
 const loginUser = async (data: LoginInput): Promise<LoginResponse> => {
-  const loginSucess:LoginResponse = {jwt:""};
-  const ProtoLoginInput = new auth.LoginDto({email:data.email,password:data.password})
+  const loginSucess: LoginResponse = { jwt: "" };
+  const ProtoLoginInput = new auth.LoginDto({ email: data.email, password: data.password })
   const reqBinary = ProtoLoginInput.serializeBinary()
   const response = await fetch('http://localhost:4000/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/octet-stream',
     },
-    body:reqBinary,
+    body: reqBinary,
   });
 
   if (!response.ok) {
     throw new Error('Wrong Email Or Password');
   }
-  
+
   const resBinary = await response.arrayBuffer();
   const uInt8Array = new Uint8Array(resBinary);
   const resData = auth.LoginSucess.deserializeBinary(uInt8Array);
-  loginSucess.jwt = resData.jwt; 
+  loginSucess.jwt = resData.jwt;
   return loginSucess;
 };
 
