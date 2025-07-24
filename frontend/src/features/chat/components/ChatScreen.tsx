@@ -23,10 +23,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    console.log("this is chats from ui")
-    console.log(chats)
-    console.log("this is also chats from ui")
-    if (isSuccess && chats.length > 0) {
+    if (isSuccess) {
       const storedMessages: Message[] = chats.map((chat) => ({
         id: parseInt(chat.id),
         text: chat.message,

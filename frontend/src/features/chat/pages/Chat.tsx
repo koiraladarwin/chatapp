@@ -78,7 +78,7 @@ export default function Chat() {
       }
 
       {/* Chat List */}
-      <ChatList persons={persons} setChatRoomID={setChatRoomID} openAddPerson={() => {
+      <ChatList chatRoomId={chatRoomId} persons={persons} setChatRoomID={setChatRoomID} openAddPerson={() => {
         setAddPersonScreen(true)
       }} />
 

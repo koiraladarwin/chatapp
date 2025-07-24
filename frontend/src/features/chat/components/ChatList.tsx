@@ -4,11 +4,12 @@ import ChatItem from "./ChatItem";
 
 interface ChatListProps {
   persons: Person[];
+  chatRoomId : string;
   setChatRoomID: (id: string) => void;
   openAddPerson: () => void;
 }
 
-export default function ChatList({ persons, setChatRoomID, openAddPerson }: ChatListProps) {
+export default function ChatList({ chatRoomId, persons, setChatRoomID, openAddPerson }: ChatListProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPersons = persons.filter(person =>
@@ -16,43 +17,46 @@ export default function ChatList({ persons, setChatRoomID, openAddPerson }: Chat
   );
 
   return (
-    <div className="w-3/12 max-md:w-2/12 flex flex-col bg-gray-800 p-2 gap-2 max-h-screen overflow-clip">
+    <div className="w-3/12 max-md:w-2/12 flex flex-col bg-gray-900 p-2 gap-2 max-h-screen overflow-clip">
 
+      {/* Header */}
       <div className="p-4 max-sm:hidden text-white text-3xl max-md:text-lg font-bold flex justify-between items-center max-md:flex-col max-md:gap-2 ">
-        <div>
-          Darwin Chat
-        </div>
-        <div onClick={openAddPerson}
-          className="bg-cyan-700 hover:bg-cyan-700 text-white px-6 py-2 rounded-full text-sm">
+        <div>Darwin Chat</div>
+        <button
+          onClick={openAddPerson}
+          className="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-1.5 rounded-full text-sm shadow-md transition-all duration-200"
+        >
           Add
-        </div>
+        </button>
       </div>
 
       {/* Search Bar */}
-      <div className="mb-4 max-md:hidden">
+      <div className="mb-4 max-md:hidden px-2">
         <input
           type="text"
           placeholder="Search or start new chat"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className="w-full px-4 py-2 rounded-full bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
         />
       </div>
 
       {/* Persons List */}
-      <div className="flex flex-col gap-1 overflow-y-auto pr-2 items-center" style={{ height: 'calc(100vh - 10px)' }}>
+      <div className="flex flex-col gap-2 overflow-y-auto pr-2 items-center" style={{ height: 'calc(100vh - 10px)' }}>
         {filteredPersons.map((person) => (
           <div
             key={person.id}
             onClick={() => setChatRoomID(person.id.toString())}
-            className="bg-gray-700 hover:bg-gray-700 cursor-pointer p-2 w-full rounded-lg max-md:w-fit "
+            className={person.id.toString()!==chatRoomId ? "flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150":"bg-gray-700 flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150"}
           >
-            <div className="max-md:hidden">
-              <ChatItem name={person.name} lastMessage={person.lastMessage} />
+            {/* Mobile view */}
+            <div className=" flex items-center justify-center w-12 h-12 bg-cyan-600 text-white text-xl rounded-full">
+              <SingleCircularList name={person.name} />
             </div>
 
-            <div className="md:hidden">
-              < SingleCircularList name={person.name}/>
+            {/* Desktop view */}
+            <div className="max-md:hidden">
+              <ChatItem name={person.name} lastMessage={person.lastMessage} />
             </div>
 
 
@@ -62,16 +66,16 @@ export default function ChatList({ persons, setChatRoomID, openAddPerson }: Chat
     </div>
   );
 }
+
 interface singleCircularListProps {
   name: string;
 }
 
 function SingleCircularList({ name }: singleCircularListProps) {
   return (
-    <div className="text-white text-3xl rounded-full">{name.substring(0, 1).toUpperCase()}</div>
+    <span>{name.substring(0, 1).toUpperCase()}</span>
   );
 }
-
 
 
 
