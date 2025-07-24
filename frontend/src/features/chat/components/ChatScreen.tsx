@@ -6,6 +6,7 @@ import useJwt from "../../common/hook/useGetId";
 
 interface MainChatScreenProps {
   chatRoomId: string;
+  chatRoomPersonName: string;
 }
 
 interface Message {
@@ -14,7 +15,7 @@ interface Message {
   isUser: boolean;
 }
 
-export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
+export default function ChatScreen({ chatRoomId,chatRoomPersonName }: MainChatScreenProps) {
   const id = useJwt()
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -71,7 +72,7 @@ export default function ChatScreen({ chatRoomId }: MainChatScreenProps) {
     <div className="w-9/12 max-md:w-10/12 flex flex-col bg-gray-900 max-h-screen overflow-clip">
       {/* Header */}
       <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
-        Chatting with: {chatRoomId}
+        {chatRoomPersonName}
       </div>
 
       {/* Messages List */}

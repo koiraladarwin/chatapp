@@ -34,9 +34,7 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
   //const binary = await resToUintArr(response);
   //const data = chat.ChatRoomList.deserializeBinary(binary)
   //
-  console.log("data")
   const data: any = await response.json();
-  console.log(data)
   const chatRoomState: ChatRoomResponse[] = data.map((room: ChatRoomResponse) => {
     return {
       id: room.id.toString(),

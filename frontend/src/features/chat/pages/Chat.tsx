@@ -8,7 +8,8 @@ import AddPerson from '../components/AddPerson';
 import { useAddChatRoom } from '../hooks/useAddChatRoom';
 
 export default function Chat() {
-  const [chatRoomId, setChatRoomID] = useState<string>('default');
+  const [chatRoomId, setChatRoomID] = useState<string>('None');
+  const [chatRoomName, setChatRoomName] = useState<string>('None');
   const [persons, setPersons] = useState<Person[]>([]);
   const [addPersonScreen, setAddPersonScreen] = useState<Boolean>(true)
   const { mutate } = useAddChatRoom();
@@ -78,7 +79,7 @@ export default function Chat() {
       }
 
       {/* Chat List */}
-      <ChatList chatRoomId={chatRoomId} persons={persons} setChatRoomID={setChatRoomID} openAddPerson={() => {
+      <ChatList chatRoomId={chatRoomId} persons={persons} setChatRoomID={setChatRoomID} setChatRoomName={setChatRoomName} openAddPerson={() => {
         setAddPersonScreen(true)
       }} />
 
@@ -87,7 +88,7 @@ export default function Chat() {
 
       {/* Main Chat Screen */}
       
-      <ChatScreen chatRoomId={chatRoomId} />
+      <ChatScreen chatRoomId={chatRoomId}  chatRoomPersonName={chatRoomName}/>
     </div>
   );
 }

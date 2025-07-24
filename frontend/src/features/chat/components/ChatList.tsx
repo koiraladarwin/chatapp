@@ -4,12 +4,13 @@ import ChatItem from "./ChatItem";
 
 interface ChatListProps {
   persons: Person[];
-  chatRoomId : string;
+  chatRoomId: string;
   setChatRoomID: (id: string) => void;
+  setChatRoomName: (id: string) => void;
   openAddPerson: () => void;
 }
 
-export default function ChatList({ chatRoomId, persons, setChatRoomID, openAddPerson }: ChatListProps) {
+export default function ChatList({ chatRoomId, persons, setChatRoomID, setChatRoomName, openAddPerson }: ChatListProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPersons = persons.filter(person =>
@@ -45,9 +46,13 @@ export default function ChatList({ chatRoomId, persons, setChatRoomID, openAddPe
       <div className="flex flex-col gap-2 overflow-y-auto pr-2 items-center" style={{ height: 'calc(100vh - 10px)' }}>
         {filteredPersons.map((person) => (
           <div
+
             key={person.id}
-            onClick={() => setChatRoomID(person.id.toString())}
-            className={person.id.toString()!==chatRoomId ? "flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150":"bg-gray-700 flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150"}
+            onClick={() => {
+              setChatRoomID(person.id.toString())
+              setChatRoomName(person.name)
+            }}
+            className={person.id.toString() !== chatRoomId ? "flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150" : "bg-gray-700 flex gap-2  cursor-pointer p-2 w-full rounded-xl max-md:w-fit transition-colors duration-150"}
           >
             {/* Mobile view */}
             <div className=" flex items-center justify-center w-12 h-12 bg-cyan-600 text-white text-xl rounded-full">
