@@ -30,23 +30,23 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
     }
     throw new Error('Failed to fetch chat rooms.');
   }
-  //fix this darwin
-  //const binary = await resToUintArr(response);
-  //const data = chat.ChatRoomList.deserializeBinary(binary)
-  //
-  const data: any = await response.json();
-  const chatRoomState: ChatRoomResponse[] = data.map((room: ChatRoomResponse) => {
+  const binary = await resToUintArr(response);
+  const protodata = chat.ChatRoomList.deserializeBinary(binary)
+
+  const chatRoomState: ChatRoomResponse[] = protodata.chatRooms.map((room) => {
     return {
       id: room.id.toString(),
-      user_id: room.user_id,
+      user_id: room.userId,
       name: room.name,
-      created_at: room.created_at.toString(),
+      created_at: room.create_at,
     }
   })
   return chatRoomState;
 };
 
-export const useGetChatRooms = () => { return useQuery<ChatRoomResponse[], Error>({ queryKey: ['chat_rooms'], queryFn: getChatRooms,
+export const useGetChatRooms = () => {
+  return useQuery<ChatRoomResponse[], Error>({
+    queryKey: ['chat_rooms'], queryFn: getChatRooms,
     enabled: true,
   });
 };

@@ -4,8 +4,12 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
+
 	"github.com/batmanboxer/chatapp/common"
 	"github.com/batmanboxer/chatapp/internal/utils"
+	"github.com/batmanboxer/chatapp/protomodels"
 	"github.com/google/uuid"
 )
 
@@ -30,7 +34,17 @@ func (h *Handlers) GetUserChatRoomsHanlder(w http.ResponseWriter, r *http.Reques
 		return err
 	}
 
-	utils.WriteJson(w, rooms)
+	protoRooms := protomodels.ChatRoomList{}
 
+	for _, room := range rooms {
+		protoRooms.ChatRooms = append(protoRooms.ChatRooms, &protomodels.ChatRoom{
+			Id: strconv.Itoa(room.ID),
+      Name: room.Name,
+      CreateAt: room.CreatedAt.UTC().Format(time.RFC3339),
+      UserId: room.UserId.String(),
+		})
+	}
+
+  utils.WriteProto(w, &protoRooms)
 	return nil
 }

@@ -11,7 +11,7 @@ export default function Chat() {
   const [chatRoomId, setChatRoomID] = useState<string>('None');
   const [chatRoomName, setChatRoomName] = useState<string>('None');
   const [persons, setPersons] = useState<Person[]>([]);
-  const [addPersonScreen, setAddPersonScreen] = useState<Boolean>(true)
+  const [addPersonScreen, setAddPersonScreen] = useState<Boolean>(false)
   const { mutate } = useAddChatRoom();
   const navigate = useNavigate();
 

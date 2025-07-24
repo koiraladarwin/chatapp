@@ -235,4 +235,433 @@ export namespace chat {
             return AddChatRoomRequest.deserialize(bytes);
         }
     }
+    export class MessageModel extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            id?: string;
+            sender_id?: string;
+            room_id?: string;
+            text?: string;
+            create_at?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("id" in data && data.id != undefined) {
+                    this.id = data.id;
+                }
+                if ("sender_id" in data && data.sender_id != undefined) {
+                    this.sender_id = data.sender_id;
+                }
+                if ("room_id" in data && data.room_id != undefined) {
+                    this.room_id = data.room_id;
+                }
+                if ("text" in data && data.text != undefined) {
+                    this.text = data.text;
+                }
+                if ("create_at" in data && data.create_at != undefined) {
+                    this.create_at = data.create_at;
+                }
+            }
+        }
+        get id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get sender_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set sender_id(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get room_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set room_id(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get text() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set text(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get create_at() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set create_at(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        static fromObject(data: {
+            id?: string;
+            sender_id?: string;
+            room_id?: string;
+            text?: string;
+            create_at?: string;
+        }): MessageModel {
+            const message = new MessageModel({});
+            if (data.id != null) {
+                message.id = data.id;
+            }
+            if (data.sender_id != null) {
+                message.sender_id = data.sender_id;
+            }
+            if (data.room_id != null) {
+                message.room_id = data.room_id;
+            }
+            if (data.text != null) {
+                message.text = data.text;
+            }
+            if (data.create_at != null) {
+                message.create_at = data.create_at;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                id?: string;
+                sender_id?: string;
+                room_id?: string;
+                text?: string;
+                create_at?: string;
+            } = {};
+            if (this.id != null) {
+                data.id = this.id;
+            }
+            if (this.sender_id != null) {
+                data.sender_id = this.sender_id;
+            }
+            if (this.room_id != null) {
+                data.room_id = this.room_id;
+            }
+            if (this.text != null) {
+                data.text = this.text;
+            }
+            if (this.create_at != null) {
+                data.create_at = this.create_at;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.id.length)
+                writer.writeString(1, this.id);
+            if (this.sender_id.length)
+                writer.writeString(2, this.sender_id);
+            if (this.room_id.length)
+                writer.writeString(3, this.room_id);
+            if (this.text.length)
+                writer.writeString(4, this.text);
+            if (this.create_at.length)
+                writer.writeString(5, this.create_at);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): MessageModel {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new MessageModel();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.id = reader.readString();
+                        break;
+                    case 2:
+                        message.sender_id = reader.readString();
+                        break;
+                    case 3:
+                        message.room_id = reader.readString();
+                        break;
+                    case 4:
+                        message.text = reader.readString();
+                        break;
+                    case 5:
+                        message.create_at = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): MessageModel {
+            return MessageModel.deserialize(bytes);
+        }
+    }
+    export class MessageModelList extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            messageModels?: MessageModel[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("messageModels" in data && data.messageModels != undefined) {
+                    this.messageModels = data.messageModels;
+                }
+            }
+        }
+        get messageModels() {
+            return pb_1.Message.getRepeatedWrapperField(this, MessageModel, 1) as MessageModel[];
+        }
+        set messageModels(value: MessageModel[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            messageModels?: ReturnType<typeof MessageModel.prototype.toObject>[];
+        }): MessageModelList {
+            const message = new MessageModelList({});
+            if (data.messageModels != null) {
+                message.messageModels = data.messageModels.map(item => MessageModel.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                messageModels?: ReturnType<typeof MessageModel.prototype.toObject>[];
+            } = {};
+            if (this.messageModels != null) {
+                data.messageModels = this.messageModels.map((item: MessageModel) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.messageModels.length)
+                writer.writeRepeatedMessage(1, this.messageModels, (item: MessageModel) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): MessageModelList {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new MessageModelList();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.messageModels, () => pb_1.Message.addToRepeatedWrapperField(message, 1, MessageModel.deserialize(reader), MessageModel));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): MessageModelList {
+            return MessageModelList.deserialize(bytes);
+        }
+    }
+    export class ChatRoom extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            id?: string;
+            name?: string;
+            userId?: string;
+            create_at?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("id" in data && data.id != undefined) {
+                    this.id = data.id;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("userId" in data && data.userId != undefined) {
+                    this.userId = data.userId;
+                }
+                if ("create_at" in data && data.create_at != undefined) {
+                    this.create_at = data.create_at;
+                }
+            }
+        }
+        get id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get userId() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set userId(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get create_at() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set create_at(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            id?: string;
+            name?: string;
+            userId?: string;
+            create_at?: string;
+        }): ChatRoom {
+            const message = new ChatRoom({});
+            if (data.id != null) {
+                message.id = data.id;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.userId != null) {
+                message.userId = data.userId;
+            }
+            if (data.create_at != null) {
+                message.create_at = data.create_at;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                id?: string;
+                name?: string;
+                userId?: string;
+                create_at?: string;
+            } = {};
+            if (this.id != null) {
+                data.id = this.id;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.userId != null) {
+                data.userId = this.userId;
+            }
+            if (this.create_at != null) {
+                data.create_at = this.create_at;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.id.length)
+                writer.writeString(1, this.id);
+            if (this.name.length)
+                writer.writeString(2, this.name);
+            if (this.userId.length)
+                writer.writeString(3, this.userId);
+            if (this.create_at.length)
+                writer.writeString(4, this.create_at);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatRoom {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatRoom();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.id = reader.readString();
+                        break;
+                    case 2:
+                        message.name = reader.readString();
+                        break;
+                    case 3:
+                        message.userId = reader.readString();
+                        break;
+                    case 4:
+                        message.create_at = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatRoom {
+            return ChatRoom.deserialize(bytes);
+        }
+    }
+    export class ChatRoomList extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            chatRooms?: ChatRoom[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("chatRooms" in data && data.chatRooms != undefined) {
+                    this.chatRooms = data.chatRooms;
+                }
+            }
+        }
+        get chatRooms() {
+            return pb_1.Message.getRepeatedWrapperField(this, ChatRoom, 1) as ChatRoom[];
+        }
+        set chatRooms(value: ChatRoom[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            chatRooms?: ReturnType<typeof ChatRoom.prototype.toObject>[];
+        }): ChatRoomList {
+            const message = new ChatRoomList({});
+            if (data.chatRooms != null) {
+                message.chatRooms = data.chatRooms.map(item => ChatRoom.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                chatRooms?: ReturnType<typeof ChatRoom.prototype.toObject>[];
+            } = {};
+            if (this.chatRooms != null) {
+                data.chatRooms = this.chatRooms.map((item: ChatRoom) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.chatRooms.length)
+                writer.writeRepeatedMessage(1, this.chatRooms, (item: ChatRoom) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatRoomList {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatRoomList();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.chatRooms, () => pb_1.Message.addToRepeatedWrapperField(message, 1, ChatRoom.deserialize(reader), ChatRoom));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatRoomList {
+            return ChatRoomList.deserialize(bytes);
+        }
+    }
 }

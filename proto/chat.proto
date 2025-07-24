@@ -22,3 +22,33 @@ message AddChatRoomRequest{
 }
 
 
+message MessageModel {
+  string id = 1;
+  string sender_id = 2;
+  string room_id = 3;
+  string text = 4;
+  string create_at = 5;
+}
+
+message MessageModelList {
+repeated MessageModel messageModels = 1;
+}
+
+message ChatRoom{
+  string id = 1;
+  string name = 2;
+  string userId = 3;
+  string create_at = 4;
+}
+
+message ChatRoomList {
+  repeated ChatRoom chatRooms = 1;
+}
+
+
+
+
+
+
+
+

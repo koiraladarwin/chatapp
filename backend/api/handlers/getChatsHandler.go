@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
+	"time"
 
 	"github.com/batmanboxer/chatapp/common"
 	"github.com/batmanboxer/chatapp/internal/utils"
+	"github.com/batmanboxer/chatapp/protomodels"
 	"github.com/google/uuid"
 )
 
@@ -26,15 +27,25 @@ func (h *Handlers) GetChatsHandler(w http.ResponseWriter, r *http.Request) error
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
-    
-  log.Print("i am batmaan and i got here")
-	chatRooms, err := h.ChatManager.GetChatsByChatRoom(uuidUserId, chatRoom)
-	if err != nil   {
-		return err
-	}
-  
 
-	utils.WriteJson(w, chatRooms)
+	messages, err := h.ChatManager.GetChatsByChatRoom(uuidUserId, chatRoom)
+  
+	responseMessages := protomodels.MessageModelList{}
+	for _, room := range messages {
+    
+		responseMessages.MessageModels = append(responseMessages.MessageModels, &protomodels.MessageModel{
+			Id:        room.Id,
+      SenderId: room.SenderId,
+      RoomId:    room.RoomId,
+      Text:      room.Text,
+      CreateAt: room.CreatedAt.Format(time.RFC3339),
+		})
+	}
+
+	if err != nil {
+		return err
+  }
+  utils.WriteProto(w, &responseMessages)
 
 	return nil
 }
