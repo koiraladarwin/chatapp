@@ -14,7 +14,7 @@ export default function Login() {
   const handleSubmit = () => {
     mutation.mutate({ email, password }, {
       onSuccess: () => {
-        navigate('/chat');
+        navigate('/');
       },
       onError: (error) => {
         console.error('Login error', error);
