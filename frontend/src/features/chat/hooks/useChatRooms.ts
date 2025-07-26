@@ -7,6 +7,7 @@ export interface ChatRoomResponse {
   created_at: string;
   user_id: string;
   name: string;
+  lastMessage:string;
 }
 
 const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
@@ -39,6 +40,7 @@ const getChatRooms = async (): Promise<ChatRoomResponse[]> => {
       user_id: room.userId,
       name: room.name,
       created_at: room.create_at,
+      lastMessage:room.last_message 
     }
   })
   return chatRoomState;

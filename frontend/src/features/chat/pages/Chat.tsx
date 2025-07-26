@@ -55,7 +55,7 @@ export default function Chat() {
       const formattedPersons = data.map((room) => ({
         name: room.name,
         id: room.id,
-        lastMessage: room.created_at,
+        lastMessage: room.lastMessage,
       }));
 
       setPersons(formattedPersons);

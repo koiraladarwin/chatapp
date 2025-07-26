@@ -15,7 +15,7 @@ interface Message {
   isUser: boolean;
 }
 
-export default function ChatScreen({ chatRoomId,chatRoomPersonName }: MainChatScreenProps) {
+export default function ChatScreen({ chatRoomId, chatRoomPersonName }: MainChatScreenProps) {
   const id = useJwt()
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -55,7 +55,7 @@ export default function ChatScreen({ chatRoomId,chatRoomPersonName }: MainChatSc
       type: chat.MessageType.TEXT,
       content: inputMessage.trim(),
       user_id: id,
-      room_id:chatRoomId,
+      room_id: chatRoomId,
       timestamp: Date.now(),
     })
     sendMessageToContext(message);
@@ -71,10 +71,15 @@ export default function ChatScreen({ chatRoomId,chatRoomPersonName }: MainChatSc
   return (
     <div className="w-9/12 max-md:w-10/12 flex flex-col bg-gray-900 max-h-screen overflow-clip">
       {/* Header */}
-      <div className="p-4 bg-gray-800 text-white text-lg font-semibold">
-        {chatRoomPersonName}
-      </div>
+      <div className="p-4 bg-gray-800 text-white text-lg font-semibold flex items-center space-x-3">
+        {/* Circular Avatar */}
+        <div className="w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm font-bold">
+          {chatRoomPersonName?.charAt(0).toUpperCase()}
+        </div>
 
+        {/* Name */}
+        <span>{chatRoomPersonName}</span>
+      </div>
       {/* Messages List */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 max-h-[calc(100vh-150px)] break-all">
         {messages.map((message) => {

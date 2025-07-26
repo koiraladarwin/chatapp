@@ -468,6 +468,7 @@ export namespace chat {
             name?: string;
             userId?: string;
             create_at?: string;
+            last_message?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -483,6 +484,9 @@ export namespace chat {
                 }
                 if ("create_at" in data && data.create_at != undefined) {
                     this.create_at = data.create_at;
+                }
+                if ("last_message" in data && data.last_message != undefined) {
+                    this.last_message = data.last_message;
                 }
             }
         }
@@ -510,11 +514,18 @@ export namespace chat {
         set create_at(value: string) {
             pb_1.Message.setField(this, 4, value);
         }
+        get last_message() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set last_message(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data: {
             id?: string;
             name?: string;
             userId?: string;
             create_at?: string;
+            last_message?: string;
         }): ChatRoom {
             const message = new ChatRoom({});
             if (data.id != null) {
@@ -529,6 +540,9 @@ export namespace chat {
             if (data.create_at != null) {
                 message.create_at = data.create_at;
             }
+            if (data.last_message != null) {
+                message.last_message = data.last_message;
+            }
             return message;
         }
         toObject() {
@@ -537,6 +551,7 @@ export namespace chat {
                 name?: string;
                 userId?: string;
                 create_at?: string;
+                last_message?: string;
             } = {};
             if (this.id != null) {
                 data.id = this.id;
@@ -549,6 +564,9 @@ export namespace chat {
             }
             if (this.create_at != null) {
                 data.create_at = this.create_at;
+            }
+            if (this.last_message != null) {
+                data.last_message = this.last_message;
             }
             return data;
         }
@@ -564,6 +582,8 @@ export namespace chat {
                 writer.writeString(3, this.userId);
             if (this.create_at.length)
                 writer.writeString(4, this.create_at);
+            if (this.last_message.length)
+                writer.writeString(5, this.last_message);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -584,6 +604,9 @@ export namespace chat {
                         break;
                     case 4:
                         message.create_at = reader.readString();
+                        break;
+                    case 5:
+                        message.last_message = reader.readString();
                         break;
                     default: reader.skipField();
                 }
