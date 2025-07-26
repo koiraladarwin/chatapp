@@ -143,6 +143,19 @@ func (postgres *Postgres) GetMessages(chatRoomId string, offset int, limit int) 
 	return Messages, nil
 }
 
+func (postgres *Postgres) GetLastMessageChatRoom(id int) (*models.MessageModel, error) {
+	message := &models.MessageModel{}
+	query := `SELECT id, room_id, sender_id,message, created_at FROM chats WHERE room_id = $1 ORDER BY created_at DESC LIMIT 1`
+
+	err := postgres.db.QueryRow(query, id).Scan(&message.Id, &message.RoomId, &message.SenderId, &message.Text, &message.CreatedAt)
+	if err == sql.ErrNoRows {
+		return &models.MessageModel{Text: "Start Texting"}, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return message, nil
+}
+
 func (pg *Postgres) CreateChatRoom(userIDs []uuid.UUID) error {
 	query := `INSERT INTO chats_room (user_ids) VALUES ($1)`
 	userIDsJSON, err := json.Marshal(userIDs)
@@ -202,7 +215,6 @@ func (pg *Postgres) RemoveUserFromRoom(roomID int, userID int) error {
 	return err
 }
 
-
 func (pg *Postgres) GetUserIDsByChatRoomID(roomID string) ([]string, error) {
 
 	intRoomID, err := strconv.Atoi(roomID)
@@ -217,7 +229,7 @@ func (pg *Postgres) GetUserIDsByChatRoomID(roomID string) ([]string, error) {
 		WHERE id = $1
 	`
 
-	rows, err := pg.db.Query(query,intRoomID)
+	rows, err := pg.db.Query(query, intRoomID)
 	if err != nil {
 		return nil, err
 	}
@@ -238,4 +250,3 @@ func (pg *Postgres) GetUserIDsByChatRoomID(roomID string) ([]string, error) {
 
 	return userIDs, nil
 }
-

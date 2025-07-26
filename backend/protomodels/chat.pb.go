@@ -313,6 +313,7 @@ type ChatRoom struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,3,opt,name=userId,proto3" json:"userId,omitempty"`
 	CreateAt      string                 `protobuf:"bytes,4,opt,name=create_at,json=createAt,proto3" json:"create_at,omitempty"`
+	LastMessage   string                 `protobuf:"bytes,5,opt,name=last_message,json=lastMessage,proto3" json:"last_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -371,6 +372,13 @@ func (x *ChatRoom) GetUserId() string {
 func (x *ChatRoom) GetCreateAt() string {
 	if x != nil {
 		return x.CreateAt
+	}
+	return ""
+}
+
+func (x *ChatRoom) GetLastMessage() string {
+	if x != nil {
+		return x.LastMessage
 	}
 	return ""
 }
@@ -440,12 +448,13 @@ const file_chat_proto_rawDesc = "" +
 	"\x04text\x18\x04 \x01(\tR\x04text\x12\x1b\n" +
 	"\tcreate_at\x18\x05 \x01(\tR\bcreateAt\"L\n" +
 	"\x10MessageModelList\x128\n" +
-	"\rmessageModels\x18\x01 \x03(\v2\x12.chat.MessageModelR\rmessageModels\"c\n" +
+	"\rmessageModels\x18\x01 \x03(\v2\x12.chat.MessageModelR\rmessageModels\"\x86\x01\n" +
 	"\bChatRoom\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06userId\x18\x03 \x01(\tR\x06userId\x12\x1b\n" +
-	"\tcreate_at\x18\x04 \x01(\tR\bcreateAt\"<\n" +
+	"\tcreate_at\x18\x04 \x01(\tR\bcreateAt\x12!\n" +
+	"\flast_message\x18\x05 \x01(\tR\vlastMessage\"<\n" +
 	"\fChatRoomList\x12,\n" +
 	"\tchatRooms\x18\x01 \x03(\v2\x0e.chat.ChatRoomR\tchatRooms*\"\n" +
 	"\vMessageType\x12\b\n" +

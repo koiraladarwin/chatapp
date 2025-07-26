@@ -9,6 +9,7 @@ type ChatStorage interface {
 	GetUserIDsByChatRoomID(string) ([]string, error)
 	GetMessages(string, int, int) ([]models.MessageModel, error)
 	AddMessage(models.MessageModel) error
+	GetLastMessageChatRoom(int) (*models.MessageModel, error)
 	CreateChatRoom([]uuid.UUID) error
 	GetChatRoomsByUser(uuid.UUID) ([]*models.ChatRoom, error)
 	RemoveUserFromRoom(int, int) error

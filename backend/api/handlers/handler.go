@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+type customHttpHandler func(http.ResponseWriter, *http.Request) error
+
 type ChatService interface {
 	WebsocketAddClient(*websocket.Conn,string)
 	AddChatRoom([]uuid.UUID) error
@@ -15,6 +17,7 @@ type ChatService interface {
 	CheckChatRoomExists(uuid.UUID, int) bool
 	GetUsersByName(string, string) ([]models.AccountModelDto, error)
 	GetChatsByChatRoom(uuid.UUID,string) ([]models.MessageModel, error)
+	GetLastMessageChatRoom(int) (*models.MessageModel, error)
 }
 
 type AuthService interface {
@@ -38,4 +41,3 @@ func NewHandlers(
 	}
 }
 
-type customHttpHandler func(http.ResponseWriter, *http.Request) error

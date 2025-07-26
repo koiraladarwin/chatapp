@@ -16,4 +16,5 @@ type Storage interface {
 	RemoveUserFromRoom(int, int) error
 	GetUserById(string) (models.AccountModel, error)
 	GetUsersByName(string) ([]models.AccountModel, error)
+	GetLastMessageChatRoom(int) (*models.MessageModel, error)
 }

@@ -37,6 +37,7 @@ func (h *WebSocketManager) GetChatRoomsByUser(id uuid.UUID) ([]*models.ResponseC
 			Name:   user.Name,
 			ID:     chatRoom.ID,
 			UserId: responseUserId,
+      
 		}
 		responseChatRooms = append(responseChatRooms, &responseChatRoom)
 	}

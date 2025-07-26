@@ -17,10 +17,7 @@ message ChatMessage {
   int64 timestamp = 5;
 }
 
-message AddChatRoomRequest{
-    string participant = 1;
-}
-
+message AddChatRoomRequest { string participant = 1; }
 
 message MessageModel {
   string id = 1;
@@ -30,25 +27,14 @@ message MessageModel {
   string create_at = 5;
 }
 
-message MessageModelList {
-repeated MessageModel messageModels = 1;
-}
+message MessageModelList { repeated MessageModel messageModels = 1; }
 
-message ChatRoom{
+message ChatRoom {
   string id = 1;
   string name = 2;
   string userId = 3;
   string create_at = 4;
+  string last_message = 5;
 }
 
-message ChatRoomList {
-  repeated ChatRoom chatRooms = 1;
-}
-
-
-
-
-
-
-
-
+message ChatRoomList { repeated ChatRoom chatRooms = 1; }
