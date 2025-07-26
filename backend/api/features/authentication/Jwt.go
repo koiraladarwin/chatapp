@@ -3,15 +3,17 @@ package auth
 import (
 	"errors"
 	"log"
+	"os"
 	"strings"
 	"time"
+
 	"github.com/golang-jwt/jwt"
 )
 
-var secretKey = []byte("batmanboxer")
-
 func ValidateJwt(tokenString string) (string, error) {
 	parts := strings.Split(tokenString, ".")
+	secretKey := []byte(os.Getenv("key"))
+
 	if len(parts) != 3 {
 		return "", errors.New("invalid token format")
 	}
@@ -24,7 +26,7 @@ func ValidateJwt(tokenString string) (string, error) {
 			return secretKey, nil
 		})
 	if err != nil {
-    return "", err
+		return "", err
 	}
 
 	claims, ok := token.Claims.(*jwt.StandardClaims)
@@ -37,6 +39,7 @@ func ValidateJwt(tokenString string) (string, error) {
 
 func GenerateJwt(id string) (string, error) {
 
+	secretKey := []byte(os.Getenv("key"))
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 		Issuer:    "batmanissuer",
@@ -45,7 +48,7 @@ func GenerateJwt(id string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secretKey)
-  log.Println(id)
+	log.Println(id)
 	if err != nil {
 		return "", err
 	}
